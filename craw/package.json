@@ -1,0 +1,13 @@
+{
+  "name": "ltweb1",
+  "version": "1.0.0",
+  "description": "draw data for ltweb1 project",
+  "main": "index.js",
+  "repository": "https://github.com/phamdung1510/ltweb1",
+  "author": "Pham Dung",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "puppeteer": "^1.10.0"
+  }
+}
