@@ -15,8 +15,10 @@ drop table if exists USERS;
 /*==============================================================*/
 create table BRANCH
 (
-   BRANCH_ID            int not null,
+   BRANCH_ID            int not null auto_increment,
    NAME                 varchar(40),
+   URL                  varchar(20),
+   VERSION              int,
    primary key (BRANCH_ID)
 );
 
@@ -25,8 +27,10 @@ create table BRANCH
 /*==============================================================*/
 create table CATEGORY
 (
-   CATEGORY_ID          int not null,
+   CATEGORY_ID          int not null auto_increment,
    NAME                 varchar(40),
+   URL                  varchar(20),
+   VERSION              int,
    primary key (CATEGORY_ID)
 );
 
@@ -35,13 +39,14 @@ create table CATEGORY
 /*==============================================================*/
 create table ORDERS
 (
-   ID                   int not null,
+   ORDER_ID             int not null auto_increment,
    USERNAME             char(50),
    ORDER_DATE           datetime,
    RECEIVE_DATE         datetime,
    STATUS               int,
-   AMOUNT               decimal,
-   primary key (ID)
+   PRICE                decimal,
+   VERSION              int,
+   primary key (ORDER_ID)
 );
 
 /*==============================================================*/
@@ -49,10 +54,11 @@ create table ORDERS
 /*==============================================================*/
 create table ORDERS_DETAIL
 (
-   ID                   int not null,
+   ORDER_ID             int not null auto_increment,
    PRODUCT_ID           int not null,
    QUANTITY             int not null,
-   primary key (ID, PRODUCT_ID)
+   VERSION              int,
+   primary key (ORDER_ID, PRODUCT_ID)
 );
 
 /*==============================================================*/
@@ -60,14 +66,17 @@ create table ORDERS_DETAIL
 /*==============================================================*/
 create table PRODUCT
 (
-   PRODUCT_ID           int not null,
+   PRODUCT_ID           int not null auto_increment,
    BRANCH_ID            int,
    CATEGORY_ID          int,
    NAME                 varchar(100),
-   AMOUNT               decimal,
+   SUBTITLE             varchar(100),
+   URL                  varchar(100),
+   PRICE                decimal,
    VIEW                 decimal,
-   DESCRIPTION          varchar(255),
+   DETAIL               text,
    QUANTITY             int,
+   VERSION              int,
    primary key (PRODUCT_ID)
 );
 
@@ -82,14 +91,15 @@ create table USERS
    PHONE                char(11),
    ADDRESS              varchar(255),
    TYPE                 int,
+   VERSION              int,
    primary key (USERNAME)
 );
 
 alter table ORDERS add constraint FK_USER_ORDER foreign key (USERNAME)
       references USERS (USERNAME) on delete restrict on update restrict;
 
-alter table ORDERS_DETAIL add constraint FK_ORDERS_DETAIL foreign key (ID)
-      references ORDERS (ID) on delete restrict on update restrict;
+alter table ORDERS_DETAIL add constraint FK_ORDERS_DETAIL foreign key (ORDER_ID)
+      references ORDERS (ORDER_ID) on delete restrict on update restrict;
 
 alter table ORDERS_DETAIL add constraint FK_ORDERS_DETAIL2 foreign key (PRODUCT_ID)
       references PRODUCT (PRODUCT_ID) on delete restrict on update restrict;

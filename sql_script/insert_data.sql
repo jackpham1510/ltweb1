@@ -1,0 +1,12 @@
+insert into BRANCH(NAME, URL, VERSION) values('Apple','apple',0);
+insert into BRANCH(NAME, URL, VERSION) values('Samsung','samsung',0);
+insert into BRANCH(NAME, URL, VERSION) values('Xiaomi','xiaomi',0);
+insert into BRANCH(NAME, URL, VERSION) values('Oppo','oppo',0);
+insert into BRANCH(NAME, URL, VERSION) values('Asus','asus',0);
+insert into CATEGORY(NAME, URL, VERSION) values('Điện thoại','dien-thoai',0);
+insert into CATEGORY(NAME, URL, VERSION) values('Máy tính bảng','may-tinh-bang',0);
+insert into CATEGORY(NAME, URL, VERSION) values('Tai nghe','tai-nghe',0);
+insert into CATEGORY(NAME, URL, VERSION) values('Pin, sạc dự phòng','pin-sac-du-phong',0);
+insert into CATEGORY(NAME, URL, VERSION) values('Dây cáp','day-cap',0);
+insert into CATEGORY(NAME, URL, VERSION) values('Thẻ nhớ','the-nho',0);
+insert into USERS(USERNAME, PASSWORD, NAME, TYPE, VERSION) values('admin','123456','admin',1,0);
