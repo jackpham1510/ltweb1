@@ -60,6 +60,7 @@ const category = (folder) => {
 const branch = (folder) => {
   switch (folder){
     case 'iphone':
+    case 'apple-ipad':
       return 1;
     case 'samsung':
       return 2;
