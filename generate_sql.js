@@ -89,8 +89,8 @@ for(let linkJson of linkJsons){
     const details = fs.readFileSync(`${__dirname}/craw/craw_data/details/${folder}/${link.path}.json`, 'utf8');
     //console.log({path, primtitle, subtitle, details: details.length});
     sql += insert('PRODUCT',
-      'BRANCH_ID, CATEGORY_ID, NAME, SUBTITLE, URL, PRICE, VIEW, DETAIL, QUANTITY, VERSION', [
-      branch(folder), category(folder), `'${primtitle}'`, `'${subtitle}'`, `'${path}'`, price, 0, `'${details}'`, 100, 0
+      'BRANCH_ID, CATEGORY_ID, NAME, SUBTITLE, URL, PRICE, VIEW, SOLD, DETAIL, QUANTITY, VERSION', [
+      branch(folder), category(folder), `'${primtitle}'`, `'${subtitle}'`, `'${path}'`, price, 0, 0, `'${details}'`, 100, 0
     ]);
   }
   fs.appendFileSync(insertProductSqlFile, sql);

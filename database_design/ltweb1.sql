@@ -54,7 +54,7 @@ create table ORDERS
 /*==============================================================*/
 create table ORDERS_DETAIL
 (
-   ORDER_ID             int not null auto_increment,
+   ORDER_ID             int not null,
    PRODUCT_ID           int not null,
    QUANTITY             int not null,
    VERSION              int,
@@ -73,7 +73,8 @@ create table PRODUCT
    SUBTITLE             varchar(100),
    URL                  varchar(100),
    PRICE                decimal,
-   VIEW                 decimal,
+   VIEW                 int,
+   SOLD                 int,
    DETAIL               text,
    QUANTITY             int,
    VERSION              int,

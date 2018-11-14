@@ -39,6 +39,23 @@
     static function query(string $sql){
       return $db->query($sql);
     }
+
+    static function paginate(string $id, int $page, int $itemPerPage, SqlBuilder $sqlBuilder){
+      $result = [];
+      $table = $sqlBuilder->qfrom;
+      $countSql = SqlBuilder::from($table)->select("count(*) as total")->build();
+      $countResult = self::$db->query($countSql);
+      
+      $result["total"] = $countResult->fetch_assoc()["total"];
+      $result["totalPages"] = ($countResult / $itemPerPage);
+      $result["active"] = $page;
+
+      $sql = $sqlBuilder->paginate($id, $page, $itemPerPage)->build();
+      
+      $result["data"] = self::select($sql);
+
+      return $result;
+    }
   }
 
   Provider::connect(Config::getDbConnection());
