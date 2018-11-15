@@ -1,17 +1,17 @@
 <?php 
   class SqlBuilder{
-    private $qinsert;
-    private $qselect;
-    private $qupdate;
-    private $qdelete;
-    private $qfrom;
-    private $qwhere;
-    private $qorder;
-    private $qlimit;
-    private $qgroup;
-    private $qhaving;
-    private $qpaginate;
-    private $qtype;
+    public $qinsert;
+    public $qselect;
+    public $qupdate;
+    public $qdelete;
+    public $qfrom;
+    public $qwhere;
+    public $qorder;
+    public $qlimit;
+    public $qgroup;
+    public $qhaving;
+    public $qpaginate;
+    public $qtype;
 
     public function __construct(string $qfrom){
       $this->qfrom = $qfrom;
@@ -27,7 +27,7 @@
       return $this;
     }
 
-    public function select(string $qselect){
+    public function select(string $qselect = "*"){
       $this->qselect = $qselect;
       $this->qtype = "select";
       return $this;
@@ -73,7 +73,7 @@
       $start = ($page - 1) * $itemPerPage; //0-based
       $end = $start + $itemPerPage;
       $this->qpaginate = "($id > ($start) and $id <= ($end))";
-      $this->qlimit = $itemPerPage;
+      //$this->qlimit = $itemPerPage;
       return $this;
     }
 
@@ -85,7 +85,7 @@
           $sql = "select $this->qselect from $this->qfrom";
           $sql .= isset($this->qwhere) && isset($this->qpaginate) ? " where $this->qwhere and $this->qpaginate" : "";
           $sql .= isset($this->qwhere) && is_null($this->qpaginate) ? " where $this->qwhere" : "";
-          $sql .= is_null($this->qwhere) && isset($this->qpaginate) ? " and $this->qpaginate" : "";
+          $sql .= is_null($this->qwhere) && isset($this->qpaginate) ? " where $this->qpaginate" : "";
           $sql .= isset($this->qgroup) ? " group by $this->qfrom" : "";
           $sql .= isset($this->qhaving) ? " having $this->qhaving" : "";
           $sql .= isset($this->qorder) ? " order by $this->qorder" : "";

@@ -6,5 +6,8 @@
     "username": "root",
     "password": "",
     "dbname": "ltweb1"
+  },
+  "product": {
+    "itemPerPage": 20
   }
 }

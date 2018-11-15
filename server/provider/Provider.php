@@ -1,5 +1,6 @@
 <?php 
   require_once "core/Config.php";
+  require_once "SqlBuilder.php";
 
   class Provider{
     private static $db;
@@ -29,9 +30,7 @@
       $qresult = self::$db->query($sql);
       $result = [];
       while ($row = $qresult->fetch_assoc()){
-        foreach($row as $col => $value){
-          $result[$col] = $value;
-        }
+        array_push($result, $row);
       }
       return $result;
     }
@@ -47,11 +46,12 @@
       $countResult = self::$db->query($countSql);
       
       $result["total"] = $countResult->fetch_assoc()["total"];
-      $result["totalPages"] = ($countResult / $itemPerPage);
+      $result["totalPages"] = ceil($result["total"] / $itemPerPage);
       $result["active"] = $page;
 
       $sql = $sqlBuilder->paginate($id, $page, $itemPerPage)->build();
-      
+      //print_r($sql);
+
       $result["data"] = self::select($sql);
 
       return $result;

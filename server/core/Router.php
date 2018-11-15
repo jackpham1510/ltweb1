@@ -1,5 +1,6 @@
 <?php
   require_once "Config.php";
+  require_once "Util.php";
 
   class Router{
     private static $GET = [];
@@ -25,11 +26,10 @@
 
     static function callFunc($method, $path, $request){
       if (array_key_exists($path, $method)){
-        $method[$path]($request);
+        return $method[$path]($request);
       }
-      else {
-        echo "Unhandled request";
-      }
+      
+      return Util::error(1, "Unhandled Request");
     }
 
     static function resolve(){
@@ -38,13 +38,13 @@
 
       switch ($requestMethod){
         case "GET":
-          self::callFunc(self::$GET, $path, $_GET);
+          echo Util::jsonEncode(self::callFunc(self::$GET, $path, $_GET));
           break;
         case "POST":
-          self::callFunc(self::$POST, $path, $_POST);
+          echo Util::jsonEncode(self::callFunc(self::$POST, $path, $_POST));
           break;
         default:
-          echo "Unsupported method";
+          echo Util::jsonEncode(Util::error(-1, "Unhandled HTTP Method"));
       }
     }
   }
