@@ -1,6 +1,7 @@
 {
   "env": "development",
   "dirname": "/ltweb1/server",
+  "serverhost": "http://localhost:6969/ltweb1/server",
   "db_connection": {
     "servername": "localhost:3306",
     "username": "root",

@@ -1,8 +1,9 @@
 <?php
   require_once "service/Product.php";
+  require_once "core/Util.php";
 
   Router::get('/product/all', function ($req){
-    if (is_null($req["p"])) return null;
+    if (!Util::isKeyExists('p', $req)) return null;
     
     $page = intval($req["p"]);
     
@@ -10,7 +11,7 @@
   });
 
   Router::get('/product/by/branch', function ($req){
-    if (is_null($req["b"]) || is_null($req["p"])) return null;
+    if (!Util::isKeyExists('p', $req) || !Util::isKeyExists('b', $req)) return null;
     
     $branch_id = intval($req["b"]);
     $page = intval($req["p"]);
@@ -19,7 +20,7 @@
   });
 
   Router::get('/product/by/category', function ($req){
-    if (is_null($req["c"]) || is_null($req["p"])) return null;
+    if (!Util::isKeyExists('c', $req) || !Util::isKeyExists('p', $req)) return null;
 
     $category_id = intval($req["c"]);
     $page = intval($req["p"]);
@@ -28,20 +29,23 @@
   });
 
   Router::get('/product/top/view', function ($req){
-    $top = $req["t"];
-    if (isset($top))
-      return ProductService::topView(intval($top));
+    if (Util::isKeyExists('t', $req))
+      return ProductService::topView(intval($req["t"]));
 
     return ProductService::topView();
   });
 
   Router::get('/product/top/sold', function ($req){
-    $top = $req["t"];
-    if (isset($top))
-      return ProductService::topSold(intval($top));
+    if (Util::isKeyExists('t', $req))
+      return ProductService::topSold(intval($req["t"]));
 
     return ProductService::topSold();
   });
 
+  Router::get('/product/top/new', function ($req){
+    if (Util::isKeyExists('t', $req))
+      return ProductService::topNew(intval($req["t"]));
 
+    return ProductService::topNew();
+  });
 ?>

@@ -1,3 +1,5 @@
 craw/node_modules/
 craw/craw_data/*
+client/node_modules/
+client/src/assets/images/*
 config.production.json

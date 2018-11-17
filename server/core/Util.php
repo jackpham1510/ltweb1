@@ -12,5 +12,9 @@
 
       return $json;
     }
+
+    static function isKeyExists($key, $data){
+      return array_key_exists($key, $data) && isset($data[$key]); 
+    }
   }
 ?>

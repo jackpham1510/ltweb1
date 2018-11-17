@@ -17,10 +17,22 @@
       return Provider::paginate('product_id', $page, self::$ITEM_PER_PAGE, $sql);
     }
 
+    static function topNew(int $top = 10){
+      $sql = SqlBuilder::from('product')
+        ->where('price is not null and quantity > 0')
+        ->order('product_id desc')
+        ->limit($top)
+        ->select()
+        ->build();
+      
+      return Provider::select($sql);
+    }
+
     static function topSold(int $top = 10){
       $sql = SqlBuilder::from('product')
+        ->where('price is not null and quantity > 0')
         ->order('sold desc')
-        ->limit(10)
+        ->limit($top)
         ->select()
         ->build();
       
@@ -29,8 +41,9 @@
 
     static function topView(int $top = 10){
       $sql = SqlBuilder::from('product')
+        ->where('price is not null and quantity > 0')
         ->order('view desc')
-        ->limit(10)
+        ->limit($top)
         ->select()
         ->build();
       
@@ -39,7 +52,7 @@
 
     static function getByBranch(string $branch_id, int $page = 1){
       $sql = SqlBuilder::from('product')
-        ->where("branch_id = $branch_id")
+        ->where("branch_id = $branch_id and quantity > 0")
         ->select();
       
       return Provider::paginate('product_id', $page, self::$ITEM_PER_PAGE, $sql);
@@ -47,7 +60,7 @@
 
     static function getByCategory(string $cate_id, int $page = 1){
       $sql = SqlBuilder::from('product')
-        ->where("category_id = $category_id")
+        ->where("category_id = $category_id and quantity > 0")
         ->select();
       
       return Provider::paginate('product_id', $page, self::$ITEM_PER_PAGE, $sql);

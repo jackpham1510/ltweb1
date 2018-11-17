@@ -1,0 +1,230 @@
+$xs-width: 0px;
+$sm-width: 572px;
+$md-width: 850px;
+$lg-width: 1280px;
+$colors:(
+	primary: #20a0ff,
+	success: #42b983,
+	white: #fff,
+	dark: #333,
+	light: #f1f1f1,
+	danger: #dc3545
+);
+$directs: (
+	t: top,
+	b: bottom,
+	l: left,
+	r: right
+);
+$pos: absolute, relative, fixed;
+.float-right{
+	float: right;
+}
+.float-left{
+	float: left;
+}
+$weights: 100, 200, 400, 700, bold;
+@each $p in $pos {
+	.#{$p}{
+		position: $p;		
+	}
+}
+$bdr: 4, 8;
+@each $r in $bdr{
+	.bdr-#{$r}{
+		border-radius: $r + 0px;
+	}
+}
+@for $i from -1 to 10{
+	.z-#{$i}{
+		z-index: $i;
+	}
+}
+$percents: 25, 50, 75, 100;
+@each $p in $percents{
+	.width-#{$p}{
+		width: $p + 0%;
+	}
+	.height-#{$p}{
+		height: $p + 0%;
+	}
+}
+@each $w in $weights{
+	.fw-#{$w}{
+		font-weight: $w !important;
+	}
+}
+@each $n, $c in $colors{
+	.bg-#{$n}{
+		background-color: $c !important;
+	}
+	.text-#{$n}{
+		color: $c !important;
+	}
+	.bd-#{$n}{
+		border-color: $c !important;
+	}
+}
+@for $size from 12 to 40 {
+	.fs-#{$size}{
+		font-size: $size + 0px !important;
+	}
+}
+@for $i from 0 to 10{
+	$size: $i*5;
+	.mx-#{$size}{
+		margin-right: $size + 0px !important;
+		margin-left: $size + 0px !important;
+	}
+	.my-#{$size}{
+		margin-top: $size + 0px !important;
+		margin-bottom: $size + 0px !important;
+	}
+	.bd-#{$i}{
+		border: ($i + 0px) solid !important;
+	}
+	.px-#{$size}{
+		padding-left: $size + 0px !important;
+		padding-right: $size + 0px !important;
+	}
+	.py-#{$size}{
+		padding-top: $size + 0px  !important;
+		padding-bottom: $size + 0px !important;
+	}
+	@each $d, $f in $directs{
+		.m#{$d}-#{$size}{
+			margin-#{$f}: 0px + $size !important;
+		}
+		.p#{$d}-#{$size}{
+			padding-#{$f}: 0px + $size !important;
+		}
+		.bd-#{$d}-#{$i}{
+			border-#{$f}: ($i + 0px) solid rgba(0,0,0,.2) !important;
+		}
+	}
+}
+$displays: inline, flex, block, none, inline-block, inline-flex;
+@each $d in $displays{
+	.d-#{$d}{
+		display: #{$d} !important;
+	}
+}
+$flex-aligns: center, flex-start, flex-end, space-between;
+@each $a in $flex-aligns{
+	.fl-y-#{$a}{
+		align-items: $a !important;
+	}
+	.fl-x-#{$a}{
+		justify-content: $a !important;
+	}
+} 
+body,html{
+	padding: 0;
+	margin: 0;
+	background: rgba(0,0,0,.005);
+	font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+}
+a{
+	text-decoration: none;
+	color: inherit;
+	&:hover{
+		text-decoration: underline;
+	}
+}
+.container{
+	padding: 0 20px;
+}
+.el-carousel__container{
+	height: 400px !important;
+}
+.nav-menu{
+	overflow: hidden;
+}
+.header{
+	.header-brand{
+		text-decoration: none !important;
+	}
+}
+.el-menu{
+	.el-menu-item:hover, .el_submenu__title:hover{
+		text-decoration: underline;
+	}
+	.el-submenu__title{
+		padding: 0 !important;
+		background: #fff !important;
+	}
+}
+.card-body{
+	height: 400px;
+	cursor: pointer;
+	&:hover{
+		img{
+			transform: translateY(-10px);
+		}
+		.card-body__title{
+			color: #20a0ff !important;
+		}
+	}
+	&__img-container{
+		height: 200px;
+		width: 200px;
+		img{
+			width: 160px;
+			transition: all .2s linear;
+		}
+	}
+	&__desc{
+		background: #fff;
+		text-align: center;
+	}
+}
+
+@media(min-width: $sm-width){
+	
+}
+@media(max-width: $md-width){
+	.header{
+		.header-brand{
+			text-align: center;
+		}
+		.el-menu-item{
+			width: 100% !important;	
+		}
+		.header-right{
+			width: 100%;
+		}
+	}
+	.nav-menu{
+		&>div{
+			display: grid;
+			grid-template-columns: 50% 50%;
+		}
+	}
+}
+@media(min-width: $md-width){
+	.container{
+		padding: 0 50px;
+	}
+	.header{
+		.header-brand{
+			.fa{
+				display: none;
+			}
+		}
+		.search{
+			margin-left: 30px;
+		}
+	}
+	.nav-menu{
+		min-height: 40px;
+		.nav-menu__item{
+			height: inherit;
+		}
+	}
+}
+@media(min-width: $lg-width){
+	.container{
+		padding: 0 15%;
+	}
+}
+
