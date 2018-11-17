@@ -19,18 +19,22 @@ export default class Home extends Component{
   
   constructor(props){
     super(props);
-    utils.fetchProduct('top/sold?t=12', topsolds => this.setState({topsolds}));
-    utils.fetchProduct('top/view?t=12', topviews => this.setState({topviews}));
-    utils.fetchProduct('top/new?t=12', topnews => this.setState({topnews}));
+    utils.fetchProduct('top?type=sold&top=8', topsolds => this.setState({topsolds}));
+    utils.fetchProduct('top?type=view&top=8', topviews => this.setState({topviews}));
+    utils.fetchProduct('top?type=time_stamp&top=8', topnews => this.setState({topnews}));
   }
   render(){
     //console.log(this.props);
     const { branchs, categories } = this.props;
     const { topnews, topsolds, topviews } = this.state;
+    
     return (
       <div class="container">
         <Banner></Banner>
-        <BranchList></BranchList>
+        {
+          branchs &&
+          <BranchList branchs={branchs}></BranchList>
+        }
         <Layout.Row>
           <CenterHead type="danger">
             <i class="fa fa-heart mr-10"></i>

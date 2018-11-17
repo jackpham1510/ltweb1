@@ -69,11 +69,9 @@
       return $this;
     }
 
-    public function paginate($id, $page, $itemPerPage){
-      $start = ($page - 1) * $itemPerPage; //0-based
-      $end = $start + $itemPerPage;
-      $this->qpaginate = "($id > ($start) and $id <= ($end))";
-      //$this->qlimit = $itemPerPage;
+    public function paginate($page, $itemPerPage){
+      $start = ($page - 1) * $itemPerPage + 1; //0-based
+      $this->qlimit = "$start, $itemPerPage";
       return $this;
     }
 
@@ -83,9 +81,7 @@
       switch($this->qtype){
         case "select":
           $sql = "select $this->qselect from $this->qfrom";
-          $sql .= isset($this->qwhere) && isset($this->qpaginate) ? " where $this->qwhere and $this->qpaginate" : "";
-          $sql .= isset($this->qwhere) && is_null($this->qpaginate) ? " where $this->qwhere" : "";
-          $sql .= is_null($this->qwhere) && isset($this->qpaginate) ? " where $this->qpaginate" : "";
+          $sql .= isset($this->qwhere) ? " where $this->qwhere" : "";
           $sql .= isset($this->qgroup) ? " group by $this->qfrom" : "";
           $sql .= isset($this->qhaving) ? " having $this->qhaving" : "";
           $sql .= isset($this->qorder) ? " order by $this->qorder" : "";

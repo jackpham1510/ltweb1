@@ -49,11 +49,46 @@ export default new (function() {
     return m.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
   }
 
-  self.fetchProduct = async (path, cb) => {
-    let res = await fetch(`${config.serverhost}/product/${path}`);
+  self.fetch = async (path, cb) => {
+    let res = await fetch(`${config.serverhost}/${path}`);
     let data = await res.json();
-    data = data.map(item => ({...item, DETAIL: JSON.parse(item['DETAIL'])}));
     cb(data);
   }
-
+  self.fetchProduct = async (path, cb) => {
+    self.fetch(`product/${path}`, res => {
+      if ('data' in res){
+        res.data = res.data.map(item => {
+          return ({...item, DETAIL: JSON.parse(item['DETAIL'])}) 
+        });
+      }
+      else {
+        res = res.map(item => {
+          return ({...item, DETAIL: JSON.parse(item['DETAIL'])}) 
+        });  
+      }
+      
+      cb(res);
+    });
+  }
+  self.parseUrl = (url) => {
+    const query = url.split('?')[1];
+    let params = {};
+    if (query){
+      for(let param of query.split('&')){
+        const [key, value] = param.split('=');
+        params[key] = value;
+      }
+    }
+    return params;
+  }
+  self.scroll = (y = 0) => {
+    let scrollItv = setInterval(function (){
+      if (window.scrollY <= 0){
+        clearInterval(scrollItv);
+      }
+      else {
+        window.scrollBy(0, -(0.03 * window.innerHeight));
+      }
+    }, 1);
+  }
 })();

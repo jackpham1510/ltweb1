@@ -41,15 +41,16 @@
 
     static function paginate(string $id, int $page, int $itemPerPage, SqlBuilder $sqlBuilder){
       $result = [];
-      $table = $sqlBuilder->qfrom;
-      $countSql = SqlBuilder::from($table)->select("count(*) as total")->build();
+
+      $sqlClone = clone $sqlBuilder;
+      $countSql = $sqlClone->select("count(*) as total")->build();
       $countResult = self::$db->query($countSql);
       
       $result["total"] = $countResult->fetch_assoc()["total"];
       $result["totalPages"] = ceil($result["total"] / $itemPerPage);
       $result["active"] = $page;
 
-      $sql = $sqlBuilder->paginate($id, $page, $itemPerPage)->build();
+      $sql = $sqlBuilder->paginate($page, $itemPerPage)->build();
       //print_r($sql);
 
       $result["data"] = self::select($sql);

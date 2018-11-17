@@ -1,6 +1,6 @@
 {
-  "name": "client",
-  "short_name": "client",
+  "name": "DigiShop",
+  "short_name": "DigiShop",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",

@@ -1,6 +1,6 @@
 $xs-width: 0px;
-$sm-width: 572px;
-$md-width: 850px;
+$sm-width: 768px;
+$md-width: 992px;
 $lg-width: 1280px;
 $colors:(
 	primary: #20a0ff,
@@ -151,11 +151,9 @@ a{
 		background: #fff !important;
 	}
 }
-// .el-carousel__container{
-// 	height: 320px !important;
-// }
 .card-body{
 	height: 400px;
+	
 	cursor: pointer;
 	&:hover{
 		img{
@@ -166,8 +164,8 @@ a{
 		}
 	}
 	&__img-container{
-		height: 200px;
-		width: 200px;
+		width: auto !important;
+		height: 200px !important;
 		img{
 			width: 160px;
 			transition: all .2s linear;
@@ -179,8 +177,33 @@ a{
 	}
 }
 
-@media(min-width: $sm-width){
-	
+@media(max-width: $sm-width){
+	img.branch{
+		width: 160px !important;
+	}
+	.branch-list{
+		.all{
+			height: 60.91px;
+		}
+	}
+	.el-carousel__container{
+		height: 200px !important;
+		img{
+			height: 200px !important;
+		}
+	}
+	.banner-big{
+		padding-right: 0 !important;
+		padding-bottom: 15px;
+	}
+	.card-body{
+		&__img-container{
+			img{
+				width: 140px;
+				transition: all .2s linear;
+			}
+		}
+	}
 }
 @media(max-width: $md-width){
 	.header{
@@ -219,6 +242,11 @@ a{
 		min-height: 40px;
 		.nav-menu__item{
 			height: inherit;
+		}
+	}
+	.branch-list{
+		.all{
+			height: 74px;
 		}
 	}
 }

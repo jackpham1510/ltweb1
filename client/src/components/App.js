@@ -44,13 +44,16 @@ export default class App extends Component {
 		const { categories, branchs } = this.state;
 		return (
 			<div id="app">
-				<Header />
-				<div class="mt-20 mb-40">
-					<Router onChange={this.handleRoute}>
-						<Home path="/" branchs={branchs} categories={categories} />
-						<Product path="/san-pham/:cate/:branch?/:name?"></Product>
-					</Router>
-				</div>
+				<Header {...this.state} />
+				{
+					branchs && categories &&
+					<div class="mt-20 mb-40">
+						<Router onChange={this.handleRoute}>
+							<Home path="/" {...this.state} />
+							<Product path="/san-pham/:category/:branch?/:name?" {...this.state}></Product>
+						</Router>
+					</div>
+				}
 				<Footer></Footer>
 			</div>
 		);
