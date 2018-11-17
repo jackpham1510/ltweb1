@@ -2,13 +2,14 @@ import { h, Component } from 'preact';
 import { Router } from 'preact-router';
 
 import utils from '../utils';
+import config from '../../../config.json';
 
 import Header from './Header';
 import Footer from './Footer';
 
 // Code-splitting is automated for routes
 import Home from '../routes/Home';
-import config from '../../../config.json';
+import Product from '../routes/Product';
 
 export default class App extends Component {
 	/** Gets fired when the route changes.
@@ -47,6 +48,7 @@ export default class App extends Component {
 				<div class="mt-20 mb-40">
 					<Router onChange={this.handleRoute}>
 						<Home path="/" branchs={branchs} categories={categories} />
+						<Product path="/san-pham/:cate/:branch?/:name?"></Product>
 					</Router>
 				</div>
 				<Footer></Footer>

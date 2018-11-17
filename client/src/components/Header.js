@@ -30,22 +30,22 @@ export default () => (
 		<Menu theme="light" className="bg-primary nav-menu container" mode="horizontal">
 			<div>
 				<Menu.Item index="1" className="nav-menu__item fs-16 px-0 bd-0 bg-primary mr-40">
-					<Link href="/dien-thoai" activeClassName="active" class="d-inline-block bg-primary text-white" style="height: inherit"><i class="fa fa-mobile fs-28 mr-10"></i> Điện thoại</Link>
+					<Link href="/san-pham/dien-thoai" activeClassName="active" class="d-inline-block bg-primary text-white" style="height: inherit"><i class="fa fa-mobile fs-28 mr-10"></i> Điện thoại</Link>
 				</Menu.Item>
 				<Menu.Item index="2" className="nav-menu__item fs-16 px-0 bd-0 bg-primary mr-40">
-					<Link href="/tablet" activeClassName="active" class="d-inline-block bg-primary bd-0 text-white" style="height: inherit"><i class="fa fa-tablet fs-23 mr-10"></i>Máy tính bảng</Link>
+					<Link href="/san-pham/tablet" activeClassName="active" class="d-inline-block bg-primary bd-0 text-white" style="height: inherit"><i class="fa fa-tablet fs-23 mr-10"></i>Máy tính bảng</Link>
 				</Menu.Item>
 				<Menu.Item index="3" className="nav-menu__item fs-16 px-0 bd-0 mr-40 bg-primary ">
-					<Link href="/tai-nghe" activeClassName="active" class="d-inline-block text-white bg-primary" style="height: inherit"><i class="fa fa-headphones fs-20 mr-10"></i>Tai nghe</Link>
+					<Link href="/san-pham/tai-nghe" activeClassName="active" class="d-inline-block text-white bg-primary" style="height: inherit"><i class="fa fa-headphones fs-20 mr-10"></i>Tai nghe</Link>
 				</Menu.Item>
 				<Menu.Item index="4" className="nav-menu__item fs-16 px-0 bd-0 mr-40 bg-primary">
-					<Link href="/pin-sac-du-phong" activeClassName="active" class="d-inline-block text-white bg-primary" style="height: inherit"><i class="fa fa-battery-full fs-20 mr-10"></i>Pin, sạc dự phòng</Link>
+					<Link href="/san-pham/pin-sac-du-phong" activeClassName="active" class="d-inline-block text-white bg-primary" style="height: inherit"><i class="fa fa-battery-full fs-20 mr-10"></i>Pin, sạc dự phòng</Link>
 				</Menu.Item>
 				<Menu.Item index="5" className="nav-menu__item fs-16 px-0 bd-0 mr-40 bg-primary">
-					<Link href="/cable" activeClassName="active" class="d-inline-block text-white bg-primary" style="height: inherit"><i class="fa fa-plug fs-20 mr-10"></i>Dây cáp</Link>
+					<Link href="/san-pham/cable" activeClassName="active" class="d-inline-block text-white bg-primary" style="height: inherit"><i class="fa fa-plug fs-20 mr-10"></i>Dây cáp</Link>
 				</Menu.Item>
 				<Menu.Item index="6" className="nav-menu__item fs-16 px-0 bd-0 mr-40 bg-primary">
-					<Link href="/the-nho" activeClassName="active" class="d-inline-block text-white bg-primary" style="height: inherit"><i class="fa fa-hdd-o fs-20 mr-10"></i>Thẻ nhớ</Link>
+					<Link href="/san-pham/the-nho" activeClassName="active" class="d-inline-block text-white bg-primary" style="height: inherit"><i class="fa fa-hdd-o fs-20 mr-10"></i>Thẻ nhớ</Link>
 				</Menu.Item>
 			</div>
 		</Menu>

@@ -81,7 +81,7 @@ $percents: 25, 50, 75, 100;
 		margin-bottom: $size + 0px !important;
 	}
 	.bd-#{$i}{
-		border: ($i + 0px) solid !important;
+		border: ($i + 0px) solid rgba(0,0,0,.2) !important;
 	}
 	.px-#{$size}{
 		padding-left: $size + 0px !important;
@@ -134,9 +134,6 @@ a{
 .container{
 	padding: 0 20px;
 }
-.el-carousel__container{
-	height: 400px !important;
-}
 .nav-menu{
 	overflow: hidden;
 }
@@ -154,6 +151,9 @@ a{
 		background: #fff !important;
 	}
 }
+// .el-carousel__container{
+// 	height: 320px !important;
+// }
 .card-body{
 	height: 400px;
 	cursor: pointer;

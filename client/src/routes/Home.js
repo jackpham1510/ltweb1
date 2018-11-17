@@ -8,6 +8,7 @@ import utils from '../utils';
 import CenterHead from '../components/CenterHead';
 import ProductList from '../components/ProductList';
 import BranchList from '../components/BranchList';
+import Banner from '../components/Banner';
 
 export default class Home extends Component{
   state = {
@@ -28,6 +29,7 @@ export default class Home extends Component{
     const { topnews, topsolds, topviews } = this.state;
     return (
       <div class="container">
+        <Banner></Banner>
         <BranchList></BranchList>
         <Layout.Row>
           <CenterHead type="danger">

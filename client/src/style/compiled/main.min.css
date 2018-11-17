@@ -318,7 +318,7 @@
 }
 
 .bd-0 {
-  border: 0px solid !important;
+  border: 0px solid rgba(0, 0, 0, 0.2) !important;
 }
 
 .px-0 {
@@ -390,7 +390,7 @@
 }
 
 .bd-1 {
-  border: 1px solid !important;
+  border: 1px solid rgba(0, 0, 0, 0.2) !important;
 }
 
 .px-5 {
@@ -462,7 +462,7 @@
 }
 
 .bd-2 {
-  border: 2px solid !important;
+  border: 2px solid rgba(0, 0, 0, 0.2) !important;
 }
 
 .px-10 {
@@ -534,7 +534,7 @@
 }
 
 .bd-3 {
-  border: 3px solid !important;
+  border: 3px solid rgba(0, 0, 0, 0.2) !important;
 }
 
 .px-15 {
@@ -606,7 +606,7 @@
 }
 
 .bd-4 {
-  border: 4px solid !important;
+  border: 4px solid rgba(0, 0, 0, 0.2) !important;
 }
 
 .px-20 {
@@ -678,7 +678,7 @@
 }
 
 .bd-5 {
-  border: 5px solid !important;
+  border: 5px solid rgba(0, 0, 0, 0.2) !important;
 }
 
 .px-25 {
@@ -750,7 +750,7 @@
 }
 
 .bd-6 {
-  border: 6px solid !important;
+  border: 6px solid rgba(0, 0, 0, 0.2) !important;
 }
 
 .px-30 {
@@ -822,7 +822,7 @@
 }
 
 .bd-7 {
-  border: 7px solid !important;
+  border: 7px solid rgba(0, 0, 0, 0.2) !important;
 }
 
 .px-35 {
@@ -894,7 +894,7 @@
 }
 
 .bd-8 {
-  border: 8px solid !important;
+  border: 8px solid rgba(0, 0, 0, 0.2) !important;
 }
 
 .px-40 {
@@ -966,7 +966,7 @@
 }
 
 .bd-9 {
-  border: 9px solid !important;
+  border: 9px solid rgba(0, 0, 0, 0.2) !important;
 }
 
 .px-45 {
@@ -1121,10 +1121,6 @@ a:hover {
 
 .container {
   padding: 0 20px;
-}
-
-.el-carousel__container {
-  height: 400px !important;
 }
 
 .nav-menu {

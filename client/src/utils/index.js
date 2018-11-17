@@ -1,3 +1,5 @@
+import config from '../../../config.json';
+
 export default new (function() {
   const self = this;
 
