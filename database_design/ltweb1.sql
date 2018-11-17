@@ -1,3 +1,5 @@
+drop table if exists BANNER;
+
 drop table if exists BRANCH;
 
 drop table if exists CATEGORY;
@@ -9,6 +11,18 @@ drop table if exists ORDERS_DETAIL;
 drop table if exists PRODUCT;
 
 drop table if exists USERS;
+
+/*==============================================================*/
+/* Table: BANNER                                                */
+/*==============================================================*/
+create table BANNER
+(
+   BANNER_ID            int not null auto_increment,
+   URL                  varchar(100),
+   PATH                 varchar(100),
+   TYPE                 int,
+   primary key (BANNER_ID)
+);
 
 /*==============================================================*/
 /* Table: BRANCH                                                */
@@ -41,7 +55,7 @@ create table ORDERS
 (
    ORDER_ID             int not null auto_increment,
    USERNAME             char(50),
-   ORDER_DATE           datetime,
+   ORDER_DATE           datetime DEFAULT CURRENT_TIMESTAMP,
    RECEIVE_DATE         datetime,
    STATUS               int,
    PRICE                decimal,
@@ -77,6 +91,7 @@ create table PRODUCT
    SOLD                 int,
    DETAIL               text,
    QUANTITY             int,
+   TIME_STAMP           datetime DEFAULT CURRENT_TIMESTAMP,
    VERSION              int,
    primary key (PRODUCT_ID)
 );

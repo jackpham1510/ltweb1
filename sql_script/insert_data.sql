@@ -10,3 +10,8 @@ insert into CATEGORY(NAME, URL, VERSION) values('Pin, sạc dự phòng','pin-sa
 insert into CATEGORY(NAME, URL, VERSION) values('Dây cáp','day-cap',0);
 insert into CATEGORY(NAME, URL, VERSION) values('Thẻ nhớ','the-nho',0);
 insert into USERS(USERNAME, PASSWORD, NAME, TYPE, VERSION) values('admin','123456','admin',1,0);
+insert into BANNER(URL, PATH, TYPE) values('/dien-thoai/apple/iphone-xr-256gb-moi', 'iphone-xr-banner.jpg', 1001);
+insert into BANNER(URL, PATH, TYPE) values('/dien-thoai/xiaomi/xiaomi-mi-8-nhap-khau-ram-6gb-256gb', 'xiaomi-mi8-banner.jpg', 1002);
+insert into BANNER(URL, PATH, TYPE) values('/dien-thoai/samsung/samsung-galaxy-s9-plus-han-quoc', 'samsung-s9-banner.jpg', 1);
+insert into BANNER(URL, PATH, TYPE) values('/dien-thoai/oppo/oppo-a3s-chinh-hang', 'oppo-a3s-banner.png', 2);
+insert into BANNER(URL, PATH, TYPE) values('/may-tinh-bang/apple/ipad-pro-10-5-64gb-moi-da-kich-hoat', 'ipad-pro-banner.png', 3);
