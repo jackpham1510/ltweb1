@@ -55,7 +55,7 @@ create table ORDERS
 (
    ORDER_ID             int not null auto_increment,
    USERNAME             char(50),
-   ORDER_DATE           datetime DEFAULT CURRENT_TIMESTAMP,
+   ORDER_DATE           datetime,
    RECEIVE_DATE         datetime,
    STATUS               int,
    PRICE                decimal,
@@ -71,6 +71,7 @@ create table ORDERS_DETAIL
    ORDER_ID             int not null,
    PRODUCT_ID           int not null,
    QUANTITY             int not null,
+   COLOR                varchar(10),
    VERSION              int,
    primary key (ORDER_ID, PRODUCT_ID)
 );
@@ -91,7 +92,7 @@ create table PRODUCT
    SOLD                 int,
    DETAIL               text,
    QUANTITY             int,
-   TIME_STAMP           datetime DEFAULT CURRENT_TIMESTAMP,
+   TIME_STAMP           datetime default current_timestamp,
    VERSION              int,
    primary key (PRODUCT_ID)
 );

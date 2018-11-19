@@ -88,13 +88,13 @@
           $sql .= isset($this->qlimit) ? " limit $this->qlimit" : "";
           break;
         case "update":
-          $sql = "update $qfrom set $qupdate where $qwhere";
+          $sql = "update $this->qfrom set $this->qupdate where $this->qwhere";
           break;
         case "delete":
-          $sql = "delete $qfrom where $qwhere";
+          $sql = "delete $this->qfrom where $this->qwhere";
           break;
         case "insert":
-          $sql = "insert into $qfrom values(string $qinsert)";
+          $sql = "insert into $this->qfrom values(string $this->qinsert)";
           break;
       }
       return $sql . ";";

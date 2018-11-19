@@ -36,7 +36,7 @@
     }
 
     static function query(string $sql){
-      return $db->query($sql);
+      return self::$db->query($sql);
     }
 
     static function paginate(string $id, int $page, int $itemPerPage, SqlBuilder $sqlBuilder){
