@@ -33,20 +33,30 @@ export default new (function() {
     }
     return result;
   }
-  self.resolveProductImg = function (product, categories, branchs){
+
+  self.resolveFolder = function (product, categories, branchs){
     let cid = product['CATEGORY_ID'];
     let bid = product['BRANCH_ID'];
+    let result = categories[cid]['URL'] + '/';
+    result += (bid !== null ? branchs[bid]['URL'] : 'tat-ca') + '/';
+    return result;
+  }
+
+  self.resolveProductImg = function (product, categories, branchs){;
     let imgs = product['DETAIL']['images'];
     let imgUrl = imgs.items[imgs.selected];
-
-    let result = categories[cid]['URL'] + '/';
-    if (bid !== null){
-      result += branchs[bid]['URL'] + '/';
-    }
-    return result + imgUrl;
+    return self.resolveFolder(product, categories, branchs) + imgUrl;
   }
+
+  self.resolveProductUrl = function (product, categories, branchs){
+    return '/san-pham/' + self.resolveFolder(product, categories, branchs) + product['URL'];
+  }
+
   self.formatMoney = function (m){
-    return m.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+    if (m === null){
+      return "Liên hệ";
+    }
+    return m.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") + '₫';
   }
 
   self.fetch = async (path, cb) => {
@@ -56,6 +66,7 @@ export default new (function() {
   }
   self.fetchProduct = async (path, cb) => {
     self.fetch(`product/${path}`, res => {
+      //console.log(res);
       if ('data' in res){
         res.data = res.data.map(item => {
           return ({...item, DETAIL: JSON.parse(item['DETAIL'])}) 
@@ -70,6 +81,7 @@ export default new (function() {
       cb(res);
     });
   }
+
   self.parseUrl = (url) => {
     const query = url.split('?')[1];
     let params = {};
@@ -81,6 +93,7 @@ export default new (function() {
     }
     return params;
   }
+
   self.scroll = (y = 0) => {
     let scrollItv = setInterval(function (){
       if (window.scrollY <= 0){

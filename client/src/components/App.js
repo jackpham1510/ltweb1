@@ -10,6 +10,7 @@ import Footer from './Footer';
 // Code-splitting is automated for routes
 import Home from '../routes/Home';
 import Product from '../routes/Product';
+import ProductDetail from '../routes/ProductDetail';
 
 export default class App extends Component {
 	/** Gets fired when the route changes.
@@ -50,7 +51,8 @@ export default class App extends Component {
 					<div class="mt-20 mb-40">
 						<Router onChange={this.handleRoute}>
 							<Home path="/" {...this.state} />
-							<Product path="/san-pham/:category/:branch?/:name?" {...this.state}></Product>
+							<Product path="/san-pham/:category/:branch" {...this.state}></Product>
+							<ProductDetail path="/san-pham/:category/:branch/:productUrl" {...this.state}></ProductDetail>
 						</Router>
 					</div>
 				}

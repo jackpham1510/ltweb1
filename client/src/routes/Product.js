@@ -52,7 +52,7 @@ export default class Product extends Component{
       page = params.page;
     }
     let apiPath = `by?page=${page}&category=${category}`;
-    if (branch !== ''){
+    if (branch !== 'tat-ca'){
       apiPath += `&branch=${branch}`;
     }
     utils.fetchProduct(apiPath, res => {

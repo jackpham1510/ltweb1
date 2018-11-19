@@ -48,7 +48,7 @@ export default class Header extends Component{
 					{
 						Object.keys(categories).map((k, idx) => (
 							<Menu.Item index={idx + 1 + ''} className="nav-menu__item fs-16 px-0 bd-0 bg-primary mr-40">
-								<Link href={`/san-pham/${categories[k]['URL']}`} activeClassName="active" class="d-inline-block bg-primary text-white" style="height: inherit"  onClick={this.menuBtnClick}>
+								<Link href={`/san-pham/${categories[k]['URL']}/tat-ca`} activeClassName="active" class="d-inline-block bg-primary text-white" style="height: inherit"  onClick={this.menuBtnClick}>
 									<img src={`../assets/images/icon/${categories[k]['URL']}-32.png`} alt={`${categories[k]['URL']}-icon`} class="mr-5" style="margin-top: -5px" />
 									{categories[k]['NAME']}
 								</Link>
