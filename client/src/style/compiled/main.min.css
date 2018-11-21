@@ -135,6 +135,10 @@
   border-color: #20a0ff !important;
 }
 
+.hover-primary:hover {
+  background-color: #20a0ff !important;
+}
+
 .bg-success {
   background-color: #42b983 !important;
 }
@@ -145,6 +149,10 @@
 
 .bd-success {
   border-color: #42b983 !important;
+}
+
+.hover-success:hover {
+  background-color: #42b983 !important;
 }
 
 .bg-white {
@@ -159,6 +167,10 @@
   border-color: #fff !important;
 }
 
+.hover-white:hover {
+  background-color: #fff !important;
+}
+
 .bg-dark {
   background-color: #333 !important;
 }
@@ -169,6 +181,10 @@
 
 .bd-dark {
   border-color: #333 !important;
+}
+
+.hover-dark:hover {
+  background-color: #333 !important;
 }
 
 .bg-light {
@@ -183,6 +199,10 @@
   border-color: #f1f1f1 !important;
 }
 
+.hover-light:hover {
+  background-color: #f1f1f1 !important;
+}
+
 .bg-danger {
   background-color: #dc3545 !important;
 }
@@ -193,6 +213,10 @@
 
 .bd-danger {
   border-color: #dc3545 !important;
+}
+
+.hover-danger:hover {
+  background-color: #dc3545 !important;
 }
 
 .fs-12 {

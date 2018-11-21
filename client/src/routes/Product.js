@@ -58,7 +58,7 @@ export default class Product extends Component{
       </div>
     )
   }
-  fetchData = (props, conditions = "") => {
+  fetchData = (props) => {
     //console.log(props);
     const { category, branch, url } = props;
     const params = utils.parseUrl(url);
@@ -90,36 +90,14 @@ export default class Product extends Component{
   }
   changePage = page => {
     //console.log(this.props.url, page);
-    this.routeUrl({ page });
+    utils.routeParams(this.props.url, { page });
   }
   orderBy = (value) => {
     console.log('value', value);
     let [ orderby, mode ] = value.split('-');
-    this.routeUrl({ orderby, mode, page: 1 });
+    utils.routeParams(this.props.url, { orderby, mode, page: 1 });
   }
   price = (price_from, price_to) => {
-    this.routeUrl({ price_from, price_to, page: 1 });
-  }
-  routeUrl = (newParams) => {
-    let { url } = this.props;
-    let currParams = utils.parseUrl(url);
-
-    let params = { ...currParams, ...newParams };
-    url = url.split('?')[0] + '?';
-
-    console.log(params);
-    console.log(url);
-
-    for(let key in params){
-      url += `${key}=${params[key]}&`;
-    }
-    
-    if (url[url.length - 1] === '&'){
-      url = url.slice(0, -1);
-    }
-
-    console.log(url);
-
-    route(url);
+    utils.routeParams(this.props.url, { price_from, price_to, page: 1 });
   }
 }

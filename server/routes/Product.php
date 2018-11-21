@@ -15,25 +15,17 @@
 
   Router::get('/product/by', function ($req) use ($item_per_page){
     if (Util::isKeyExists('page', $req)){
-      $page = intval($req["page"]);
-      $ipp = $item_per_page;
-      $isBranchExists = Util::isKeyExists('branch', $req);
-      $isCategoryExists = Util::isKeyExists('category', $req);
-
-      if (Util::isKeyExists('ipp', $req)){
-        $ipp = intval($req['ipp']);
-      }
-
-      if ($isBranchExists && $isCategoryExists){
-        return ProductService::getByCategoryAndBranch($req['category'], $req['branch'], $page, $ipp);
-      }
-      if ($isBranchExists){
-        return ProductService::getByBranch($req['branch'], $page, $ipp);
-      }
-      if ($isCategoryExists){
-        return ProductService::getByCategory($req['category'], $page, $ipp);
-      }
+      return ProductService::getList($req, $item_per_page);
     } 
+    return null;
+  });
+
+  Router::get('/product/search', function ($req) use ($item_per_page){
+    if (Util::isKeyExists('input', $req) && Util::isKeyExists('page', $req)){
+      $page = intval($req['page']);
+      $input = $req['input'];
+      return ProductService::search($input, $page, $item_per_page);
+    }
     return null;
   });
 

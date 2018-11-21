@@ -22,6 +22,16 @@
       return Provider::select($sql);
     }
 
+    static function order(string $type, string $mode){
+      $sql = SqlBuilder::from('product')
+        ->where('quantity > 0')
+        ->order("$type $mode")
+        ->select()
+        ->build();
+      
+      return Provider::select($sql);
+    }
+
     static function getByUrl(string $url){
       $sql = SqlBuilder::from('product')
         ->where("url='$url'")
@@ -31,27 +41,77 @@
       return Provider::select($sql)[0];
     }
 
-    static function getBy(string $from, string $where, int $page = 1, int $ipp = 20){
-      $sql = SqlBuilder::from($from)
+    static function search(string $input, int $page, int $ipp){
+      $input = preg_replace('/[\W_]+/', "%", $input);
+      $s = "'%$input%'";
+      //print_r($s);
+      $sql = self::getBy(
+        'product p join category c on p.category_id=c.category_id 
+                   join branch b on b.branch_id=p.branch_id',
+        "p.name like $s or p.url like $s or b.url like $s or c.url like $s or b.name like $s or c.name like $s");
+      
+      return Provider::paginate($sql, $page, $ipp);
+    }
+
+    static function getList($req, $default_ipp){
+      $page = intval($req["page"]);
+      $ipp = $default_ipp;
+      $isBranchExists = Util::isKeyExists('branch', $req);
+      $isCategoryExists = Util::isKeyExists('category', $req);
+
+      if (Util::isKeyExists('ipp', $req)){
+        $ipp = intval($req['ipp']);
+      }
+
+      $sql = null;
+      if ($isBranchExists && $isCategoryExists){
+        $sql = ProductService::getByCategoryAndBranch($req['category'], $req['branch'], $page, $ipp);
+      }
+      else if ($isBranchExists){
+        $sql = ProductService::getByBranch($req['branch'], $page, $ipp);
+      }
+      else if ($isCategoryExists){
+        $sql = ProductService::getByCategory($req['category'], $page, $ipp);
+      }
+      if ($sql != null){
+        // Order
+        if (Util::isKeyExists('orderby', $req)){
+          $orderby = $req['orderby'];
+          $mode = $req['mode'];
+          $sql->order("p.$orderby $mode");
+        }
+        // Get by price range
+        if (Util::isKeyExists('price_from', $req) && Util::isKeyExists('price_to', $req)){
+          $price_from = $req['price_from'];
+          $price_to = $req['price_to'];
+
+          $sql->where($sql->qwhere. " and (p.price >= $price_from and p.price <= $price_to)");
+        }
+        
+        return Provider::paginate($sql, $page, $ipp);
+      }
+      return null;
+    }
+
+    static function getBy(string $from, string $where){
+      return SqlBuilder::from($from)
         ->where($where)
         ->select('p.*');
-
-      return Provider::paginate('product_id', $page, $ipp, $sql);
     }
 
-    static function getByBranch(string $url, int $page = 1, int $ipp = 20){
-      return self::getBy('product p join branch b on p.branch_id=b.branch_id', "b.url = '$url'", $page, $ipp);
+    static function getByBranch(string $url){
+      return self::getBy('product p join branch b on p.branch_id=b.branch_id', "b.url = '$url'");
     }
     
-    static function getByCategory(string $url, int $page = 1, int $ipp = 20){
-      return self::getBy('product p join category c on p.category_id=c.category_id', "c.url = '$url'", $page, $ipp);
+    static function getByCategory(string $url){
+      return self::getBy('product p join category c on p.category_id=c.category_id', "c.url = '$url'");
     }
 
-    static function getByCategoryAndBranch(string $category, string $branch, int $page = 1, int $ipp = 20){
+    static function getByCategoryAndBranch(string $category, string $branch){
       return self::getBy(
         'product p join category c on p.category_id=c.category_id 
                    join branch b on b.branch_id=p.branch_id', 
-        "c.url = '$category' and b.url = '$branch'", $page, $ipp);
+        "c.url = '$category' and b.url = '$branch'");
     }
 
     static function incView(string $url){

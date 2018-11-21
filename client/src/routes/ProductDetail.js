@@ -22,7 +22,8 @@ export default class ProductDetail extends Component{
   state = {
     product: null,
     relativeCategory: null,
-    relativeBranch: null
+    relativeBranch: null,
+    selectedColor: null
   }
   specColumns = [
     { label: "Tên", prop: "name" },
@@ -38,8 +39,16 @@ export default class ProductDetail extends Component{
   fetchData = (props) => {
     utils.fetch(`product/one?url=${props.productUrl}`, product => {
       window.scrollTo(0,0);
+      const DETAIL = JSON.parse(product['DETAIL']);
+      const selectedColor = DETAIL.images.selected;
+      //console.log(selectedColor);
+
       this.setState({
-        product: {...product, DETAIL: JSON.parse(product['DETAIL'])}
+        product: {
+          ...product,
+          DETAIL,
+        },
+        selectedColor
       })
     });
     utils.fetchProduct(`by?category=${props.category}&&ipp=5&&page=1`, res => this.setState({ relativeCategory: res.data }));
@@ -49,13 +58,13 @@ export default class ProductDetail extends Component{
   }
   render(){
     const { category, branch, categories, branchs } = this.props
-    const { product, relativeBranch, relativeCategory } = this.state;
-    let detail, selectedColor, imgList, spec = null;
+    const { product, relativeBranch, relativeCategory, selectedColor } = this.state;
+    let detail, imgList, spec = null;
     
     if (product){
       detail = product['DETAIL'];
       imgList = detail.images.items;
-      selectedColor = detail.images.selected;
+      //selectedColor = detail.images.selected;
       if (detail.spec){
         spec = detail.spec.map(sp => ({ name: sp[0], value: sp[1] }));
       }
@@ -68,9 +77,10 @@ export default class ProductDetail extends Component{
             <Layout.Col xs={6} sm={6}>
             {
               Object.keys(imgList).map(color => (
-                <Layout.Row className="d-flex fl-x-center mb-15">
+                <Layout.Row className="d-flex fl-x-center mb-15 pointer hover-light">
                   <div>
-                    <img src={`../assets/images/details/${category}/${branch}/${imgList[color]}`} alt={color} width="64" />
+                    <img src={`../assets/images/details/${category}/${branch}/${imgList[color]}`} alt={color} width="64" 
+                    onClick={e => this.setState({ selectedColor: color })} />
                   </div>
                 </Layout.Row>
               ))
@@ -81,7 +91,7 @@ export default class ProductDetail extends Component{
             </Layout.Col>
           </Layout.Col>
           <Layout.Col sm={14}>
-            <h2>{product['NAME']}</h2>
+            <h2>{product['NAME']} ({selectedColor})</h2>
             <p>{product['SUBTITLE']}</p>
             <h1 class="text-danger">{utils.formatMoney(product['PRICE'])}</h1>
             <p className="text-dark mt-5 width-100">

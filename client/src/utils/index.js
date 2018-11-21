@@ -1,4 +1,5 @@
 import config from '../../../config.json';
+import { route } from 'preact-router';
 
 export default new (function() {
   const self = this;
@@ -103,5 +104,21 @@ export default new (function() {
         window.scrollBy(0, -(0.03 * window.innerHeight));
       }
     }, 1);
+  }
+  self.routeParams = (url, newParams) => {
+    let currParams = self.parseUrl(url);
+
+    let params = { ...currParams, ...newParams };
+    url = url.split('?')[0] + '?';
+
+    for(let key in params){
+      url += `${key}=${params[key]}&`;
+    }
+    
+    if (url[url.length - 1] === '&'){
+      url = url.slice(0, -1);
+    }
+
+    route(url);
   }
 })();

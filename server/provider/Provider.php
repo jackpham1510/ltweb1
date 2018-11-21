@@ -39,7 +39,7 @@
       return self::$db->query($sql);
     }
 
-    static function paginate(string $id, int $page, int $itemPerPage, SqlBuilder $sqlBuilder){
+    static function paginate(SqlBuilder $sqlBuilder, int $page, int $itemPerPage){
       $result = [];
 
       $sqlClone = clone $sqlBuilder;

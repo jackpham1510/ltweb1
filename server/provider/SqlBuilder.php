@@ -70,7 +70,7 @@
     }
 
     public function paginate($page, $itemPerPage){
-      $start = ($page - 1) * $itemPerPage + 1; //0-based
+      $start = ($page - 1) * $itemPerPage; //0-based
       $this->qlimit = "$start, $itemPerPage";
       return $this;
     }

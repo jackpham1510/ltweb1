@@ -64,6 +64,9 @@ $percents: 25, 50, 75, 100;
 	.bd-#{$n}{
 		border-color: $c !important;
 	}
+	.hover-#{$n}:hover{
+		background-color: $c !important;
+	}
 }
 @for $size from 12 to 40 {
 	.fs-#{$size}{

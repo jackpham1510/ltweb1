@@ -2,17 +2,11 @@ import { h, Component } from 'preact';
 import { Link } from 'preact-router/match';
 
 import { Menu, Input } from 'element-react';
+import { route } from 'preact-router';
 
 export default class Header extends Component{
 	state = {
 		menu: window.innerWidth >= 992
-	}
-	menuBtnClick = (e) => {
-		if (window.innerWidth < 992){
-			this.setState({
-				menu: !this.state.menu
-			});
-		}
 	}
 	render(){
 		const { categories } = this.props;
@@ -26,7 +20,11 @@ export default class Header extends Component{
 						</Link>
 						<i class="fa fa-navicon float-right mt-20" onClick={this.menuBtnClick}></i>
 					</Menu.Item>
-					<Menu.Item index="2" className="bg-white bd-0 px-0"><Input icon="search" placeholder="Bạn cần gì?" className="search" /></Menu.Item>
+					<Menu.Item index="2" className="bg-white bd-0 px-0">
+						<form onSubmit={this.search}>
+							<Input icon="search" id="search" name="search" placeholder="Bạn cần gì?" className="search" />
+						</form>
+					</Menu.Item>
 					<div className={`header-right float-right ${menu ? '' : 'd-none'}`}>
 						<Menu.SubMenu index="3" title="Liên hệ" className="mr-30">
 							{[
@@ -40,7 +38,9 @@ export default class Header extends Component{
 							))}
 						</Menu.SubMenu>
 						<Menu.Item index="4" className="px-0 mr-30 bg-white">Giỏ hàng</Menu.Item>
-						<Menu.Item index="5" className="px-0 mr-30 bg-white">Tài khoản</Menu.Item>
+						<Menu.Item index="5" className="px-0 mr-30 bg-white">
+								<Link href="/dang-nhap">Tài khoản</Link>
+						</Menu.Item>
 					</div>
 				</Menu>
 				<Menu theme="light" className={`bg-primary nav-menu container ${menu ? '' : 'd-none'}`} mode="horizontal">
@@ -59,5 +59,19 @@ export default class Header extends Component{
 				</Menu>
 			</div>
 		)
+	}
+	menuBtnClick = e => {
+		if (window.innerWidth < 992){
+			this.setState({
+				menu: !this.state.menu
+			});
+		}
+	}
+	search = e => {
+		e.preventDefault();
+		let $input = document.querySelector('#search');
+		let input = $input.value;
+		$input.value = "";
+		route(`/tim-kiem?input=${input}&page=1`);
 	}
 }

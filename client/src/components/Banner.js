@@ -27,7 +27,7 @@ export default class Banner extends Component{
             big &&
             big.map(item => (
               <Carousel.Item>
-                <Link href={`/san-pham/${item['URL']}`}>
+                <Link href={`/san-pham${item['URL']}`}>
                   <img src={`../assets/images/banner/${item['PATH']}`} alt={item['PATH']} class="width-100" style="height: 300px;" />
                 </Link>
               </Carousel.Item>
@@ -39,7 +39,7 @@ export default class Banner extends Component{
           <Layout.Row className="pb-10">
           {
             small &&
-            <Link href={`/san-pham/${small[0]['URL']}`}>
+            <Link href={`/san-pham${small[0]['URL']}`}>
               <img src={`../assets/images/banner/${small[0]['PATH']}`} alt={small[0]['PATH']} class="width-100 bd-1 bdr-8" style="height: 142px" />
             </Link>
           }
@@ -47,7 +47,7 @@ export default class Banner extends Component{
           <Layout.Row>
             {
               small &&
-              <Link href={`/san-pham/${small[1]['URL']}`}>            
+              <Link href={`/san-pham${small[1]['URL']}`}>            
                 <img src={`../assets/images/banner/${small[1]['PATH']}`} alt={small[1]['PATH']} class="width-100 bd-1 bdr-8" style="height: 142px" />
               </Link>
             }

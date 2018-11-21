@@ -11,6 +11,8 @@ import Footer from './Footer';
 import Home from '../routes/Home';
 import Product from '../routes/Product';
 import ProductDetail from '../routes/ProductDetail';
+import SearchResult from '../routes/SearchResult';
+import Login from '../routes/Login';
 
 export default class App extends Component {
 	/** Gets fired when the route changes.
@@ -53,6 +55,8 @@ export default class App extends Component {
 							<Home path="/" {...this.state} />
 							<Product path="/san-pham/:category/:branch" {...this.state}></Product>
 							<ProductDetail path="/san-pham/:category/:branch/:productUrl" {...this.state}></ProductDetail>
+							<SearchResult path="/tim-kiem" {...this.state}></SearchResult>
+							<Login path="/dang-nhap"></Login>
 						</Router>
 					</div>
 				}
