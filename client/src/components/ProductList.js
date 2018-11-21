@@ -8,7 +8,7 @@ export default ({products, categories, branchs}) => (
   <Layout.Row>
   {
     products.map(p => (
-      <Layout.Col xs={12} sm={6}>
+      <Layout.Col className="col-20">
         <Card className="card-body d-flex fl-x-center p-0">
           <Link href={utils.resolveProductUrl(p, categories, branchs)} style={{ textDecoration: 'none' }}>
             <div class="card-body__img-container d-flex fl-x-center fl-y-center">

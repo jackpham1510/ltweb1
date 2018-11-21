@@ -42,9 +42,9 @@ export default class ProductDetail extends Component{
         product: {...product, DETAIL: JSON.parse(product['DETAIL'])}
       })
     });
-    utils.fetchProduct(`by?category=${props.category}&&ipp=4&&page=1`, res => this.setState({ relativeCategory: res.data }));
+    utils.fetchProduct(`by?category=${props.category}&&ipp=5&&page=1`, res => this.setState({ relativeCategory: res.data }));
     if (props.branch !== 'tat-ca'){
-      utils.fetchProduct(`by?branch=${props.branch}&&ipp=4&&page=1`, res => this.setState({ relativeBranch: res.data }));
+      utils.fetchProduct(`by?branch=${props.branch}&&ipp=5&&page=1`, res => this.setState({ relativeBranch: res.data }));
     }
   }
   render(){

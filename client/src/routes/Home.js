@@ -19,9 +19,9 @@ export default class Home extends Component{
   
   constructor(props){
     super(props);
-    utils.fetchProduct('top?type=sold&top=8', topsolds => this.setState({topsolds}));
-    utils.fetchProduct('top?type=view&top=8', topviews => this.setState({topviews}));
-    utils.fetchProduct('top?type=time_stamp&top=8', topnews => this.setState({topnews}));
+    utils.fetchProduct('top?type=sold&top=10', topsolds => this.setState({topsolds}));
+    utils.fetchProduct('top?type=view&top=10', topviews => this.setState({topviews}));
+    utils.fetchProduct('top?type=time_stamp&top=10', topnews => this.setState({topnews}));
   }
   render(){
     //console.log(this.props);

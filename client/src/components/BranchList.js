@@ -14,7 +14,7 @@ export default ({branchs}) => (
       ))
     }
     <Layout.Col sm={8} xs={12} style={{ border: '1px solid #f1f1f1' }} className="d-flex fl-x-center fl-y-center py-10 fs-20 all">
-      <Link href="/san-pham/dien-thoai" class="text-primary fw-bold">Tất cả</Link>
+      <Link href="/san-pham/dien-thoai/tat-ca" class="text-primary fw-bold">Tất cả</Link>
     </Layout.Col>
   </Layout.Row>
 )
