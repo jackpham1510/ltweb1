@@ -26,20 +26,22 @@ export default class Header extends Component{
 						</form>
 					</Menu.Item>
 					<div className={`header-right float-right ${menu ? '' : 'd-none'}`}>
-						<Menu.SubMenu index="3" title="Liên hệ" className="mr-30">
+						<Menu.SubMenu index="3" className="mr-30" title={<span><i class="mr-10 fa fa-link" style="margin-top: -5px"></i>Liên hệ</span>}>
 							{[
 								['Facebook', 'facebook-square', 'https://fb.com/cpt.jack1998'],
 								['LinkedIn', 'linkedin-square', 'https://www.linkedin.com/in/phamquantiendung/'],
 								['Github', 'github', 'https://github.com/tiendung1510']
 							].map((item, i) => (
-								<Menu.Item index={`3-${i+1}`}>
-									<a href={item[2]} class="text-dark" target="_blank"><i className={`mr-10 fa fa-${item[1]}`}></i> {item[0]}</a>
-								</Menu.Item>
+									<a href={item[2]} class="text-dark" target="_blank">
+										<Menu.Item index={`3-${i+1}`}><i className={`mr-10 fa fa-${item[1]}`}></i> {item[0]}</Menu.Item>
+									</a>
 							))}
 						</Menu.SubMenu>
-						<Menu.Item index="4" className="px-0 mr-30 bg-white">Giỏ hàng</Menu.Item>
-						<Menu.Item index="5" className="px-0 mr-30 bg-white">
-								<Link href="/dang-nhap">Tài khoản</Link>
+						<Menu.Item index="4" className="px-0 mr-30 bg-white">
+							<Link href="/gio-hang"><i class="fa fa-shopping-cart mr-10" style="margin-top: -5px"></i>Giỏ hàng</Link>
+						</Menu.Item>
+						<Menu.Item index="5" className="px-0 bg-white" index="5">
+							<Link href="/dang-nhap"><i class="mr-10 fa fa-sign-in" style="margin-top: -5px"></i>Đăng nhập</Link>
 						</Menu.Item>
 					</div>
 				</Menu>

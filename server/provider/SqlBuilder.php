@@ -94,9 +94,10 @@
           $sql = "delete $this->qfrom where $this->qwhere";
           break;
         case "insert":
-          $sql = "insert into $this->qfrom values(string $this->qinsert)";
+          $sql = "insert into $this->qfrom values($this->qinsert)";
           break;
       }
+      $sql = strip_tags($sql);
       return $sql . ";";
     }
   }

@@ -8,7 +8,7 @@
       $sql = SqlBuilder::from('product')
         ->select();
 
-      return Provider::paginate('product_id', $page, 20, $sql);
+      return Provider::paginate($sql, $page, 20);
     }
 
     static function top(string $type, int $top = 10){
@@ -34,23 +34,23 @@
 
     static function getByUrl(string $url){
       $sql = SqlBuilder::from('product')
-        ->where("url='$url'")
+        ->where("url=?")
         ->select()
         ->build();
       
-      return Provider::select($sql)[0];
+      return Provider::select($sql, 's', [$url])[0];
     }
 
     static function search(string $input, int $page, int $ipp){
       $input = preg_replace('/[\W_]+/', "%", $input);
-      $s = "'%$input%'";
+      $s = "%$input%";
       //print_r($s);
       $sql = self::getBy(
         'product p join category c on p.category_id=c.category_id 
                    join branch b on b.branch_id=p.branch_id',
-        "p.name like $s or p.url like $s or b.url like $s or c.url like $s or b.name like $s or c.name like $s");
+        "p.name like ? or p.url like ? or b.url like ? or c.url like ? or b.name like ? or c.name like ?");
       
-      return Provider::paginate($sql, $page, $ipp);
+      return Provider::paginate($sql, $page, $ipp, 'ssssss', [$s, $s, $s, $s, $s, $s]);
     }
 
     static function getList($req, $default_ipp){
@@ -64,14 +64,23 @@
       }
 
       $sql = null;
+      $types = "";
+      $params = [];
+
       if ($isBranchExists && $isCategoryExists){
-        $sql = ProductService::getByCategoryAndBranch($req['category'], $req['branch'], $page, $ipp);
+        $sql = ProductService::getByCategoryAndBranch();
+        $types = "ss";
+        array_push($params, $req['category'], $req['branch']);
       }
       else if ($isBranchExists){
-        $sql = ProductService::getByBranch($req['branch'], $page, $ipp);
+        $sql = ProductService::getByBranch();
+        $types = 's';
+        array_push($params, $req['branch']);
       }
       else if ($isCategoryExists){
-        $sql = ProductService::getByCategory($req['category'], $page, $ipp);
+        $sql = ProductService::getByCategory();
+        $types = 's';
+        array_push($params, $req['category']);
       }
       if ($sql != null){
         // Order
@@ -84,11 +93,13 @@
         if (Util::isKeyExists('price_from', $req) && Util::isKeyExists('price_to', $req)){
           $price_from = $req['price_from'];
           $price_to = $req['price_to'];
+          $types .= 'ii';
+          array_push($params, $price_from, $price_to);
 
-          $sql->where($sql->qwhere. " and (p.price >= $price_from and p.price <= $price_to)");
+          $sql->where($sql->qwhere. " and (p.price >= ? and p.price <= ?)");
         }
         
-        return Provider::paginate($sql, $page, $ipp);
+        return Provider::paginate($sql, $page, $ipp, $types, $params);
       }
       return null;
     }
@@ -99,28 +110,28 @@
         ->select('p.*');
     }
 
-    static function getByBranch(string $url){
-      return self::getBy('product p join branch b on p.branch_id=b.branch_id', "b.url = '$url'");
+    static function getByBranch(){
+      return self::getBy('product p join branch b on p.branch_id=b.branch_id', "b.url = ?");
     }
     
-    static function getByCategory(string $url){
-      return self::getBy('product p join category c on p.category_id=c.category_id', "c.url = '$url'");
+    static function getByCategory(){
+      return self::getBy('product p join category c on p.category_id=c.category_id', "c.url = ?");
     }
 
-    static function getByCategoryAndBranch(string $category, string $branch){
+    static function getByCategoryAndBranch(){
       return self::getBy(
         'product p join category c on p.category_id=c.category_id 
                    join branch b on b.branch_id=p.branch_id', 
-        "c.url = '$category' and b.url = '$branch'");
+        "c.url = ? and b.url = ?");
     }
 
     static function incView(string $url){
       $sql = SqlBuilder::from('product')
-        ->where("url='$url'")
+        ->where("url=?")
         ->update('view=view+1')
         ->build();
       
-      Provider::query($sql);
+      Provider::query($sql, 's', [$url]);
     }
   }
 ?>

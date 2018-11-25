@@ -81,29 +81,30 @@ const jsons = fs.readdirSync(`${__dirname}/craw_data/links`);
     const folder = json.split('-links')[0];
     const links = JSON.parse(data);
 
-    if (folder === 'asus' || folder === 'iphone' || folder === 'samsung' || folder === 'oppo' || folder === 'xiaomi' || folder === 'apple-ipad') continue;
     
-    for(let item of links){
-      const page = await browser.newPage();
-      await page.goto(item.url);
-      console.log(`> Start details from ${item.url}...`);
-
-      page.on('dialog', async dialog => {
-        console.log('\x1b[31m%s\x1b[37m', `(!) Alert: ${dialog.message()}`);
-        await dialog.dismiss();
-      });
-
-      const images = await crawMainImages(page, item, folder);
-      const desc = await crawDescription(page, item);
-      // const spec = await crawSpecifications(page, item);
-      const spec = null;
-      const detail = JSON.stringify({images, desc, spec});
-      const filename = `${folder}/${item.path}.json`;
-
-      fs.writeFileSync(`${__dirname}/craw_data/details/${filename}`, detail, 'utf-8');
-      console.log('\x1b[33m%s\x1b[37m', `> Export details from ${item.url} to ${filename} success!`);
-      await page.close();
-    }    
+    if (folder === 'meizu') {
+      for(let item of links){
+        const page = await browser.newPage();
+        await page.goto(item.url);
+        console.log(`> Start details from ${item.url}...`);
+  
+        page.on('dialog', async dialog => {
+          console.log('\x1b[31m%s\x1b[37m', `(!) Alert: ${dialog.message()}`);
+          await dialog.dismiss();
+        });
+  
+        const images = await crawMainImages(page, item, folder);
+        const desc = await crawDescription(page, item);
+        // const spec = await crawSpecifications(page, item);
+        const spec = null;
+        const detail = JSON.stringify({images, desc, spec});
+        const filename = `${folder}/${item.path}.json`;
+  
+        fs.writeFileSync(`${__dirname}/craw_data/details/${filename}`, detail, 'utf-8');
+        console.log('\x1b[33m%s\x1b[37m', `> Export details from ${item.url} to ${filename} success!`);
+        await page.close();
+      }    
+    }
   }
 
   // console.log(images);

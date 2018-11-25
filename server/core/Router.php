@@ -36,11 +36,17 @@
       $requestMethod = $_SERVER["REQUEST_METHOD"];
       $path = self::formatRoute($_SERVER["REQUEST_URI"]);
 
+      //print_r($_POST);
+
       switch ($requestMethod){
         case "GET":
           echo Util::jsonEncode(self::callFunc(self::$GET, $path, $_GET));
           break;
         case "POST":
+          // For Content-type: JSON
+          $rest_json = file_get_contents("php://input");
+          $_POST = json_decode($rest_json, true);
+
           echo Util::jsonEncode(self::callFunc(self::$POST, $path, $_POST));
           break;
         default:

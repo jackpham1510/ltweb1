@@ -2,6 +2,7 @@
   "env": "development",
   "dirname": "/ltweb1/server",
   "serverhost": "http://localhost:6969/ltweb1/server",
+  "token_secret_key": "1660125_phamquantiendung",
   "db_connection": {
     "servername": "localhost:3306",
     "username": "root",

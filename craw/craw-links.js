@@ -41,7 +41,7 @@ const crawLinks = async (url, browser) => {
 (async () => {
   const browser = await puppeteer.launch();
   //['iphone', 'samsung', 'xiaomi', 'oppo', 'asus']
-  ['the-nho-usb-flash']
+  ['meizu']
   .forEach(async path => {
     const url = 'https://didongthongminh.vn/' + path;
     const filename = `${path}-links.json`; 

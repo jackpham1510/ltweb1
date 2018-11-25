@@ -13,7 +13,8 @@
         $config['dbname']
       );
 
-      mysqli_set_charset(self::$db, "utf8");
+      self::$db->set_charset('utf8mb4');
+      //self::$db->real_escape_string();
 
       if (self::$db->connect_error){
         die("Connection failed: ". $connection->connect_error);
@@ -26,36 +27,65 @@
       }
     }
 
-    static function select(string $sql){
-      $qresult = self::$db->query($sql);
-      $result = [];
-      while ($row = $qresult->fetch_assoc()){
-        array_push($result, $row);
+    static function query(string $sql, string $types = "", $params = [], bool $modify = false){
+      $q = self::$db->prepare($sql);
+      //print_r($sql);
+      //echo "<hr>";
+
+      if ($q){
+        if ($types != ""){
+          $q->bind_param($types, ...$params);
+        }
+        
+        $rs = $q->execute();
+        
+        if ($modify){
+          return $rs;
+        }
+
+        return $q->get_result();
       }
-      return $result;
+
+      return null;
     }
 
-    static function query(string $sql){
-      return self::$db->query($sql);
+    static function select(string $sql, string $types = "", $params = []){
+      $qresult = self::query($sql, $types, $params);
+      //print_r($qresult);
+
+      if ($qresult && $qresult->num_rows > 0){
+        $result = [];
+        while ($row = $qresult->fetch_assoc()){
+          array_push($result, $row);
+        }
+        return $result;
+      }
+      return null;
     }
 
-    static function paginate(SqlBuilder $sqlBuilder, int $page, int $itemPerPage){
+    static function paginate(SqlBuilder $sqlBuilder, int $page, int $itemPerPage, string $types = "", $params = []){
       $result = [];
 
       $sqlClone = clone $sqlBuilder;
       $countSql = $sqlClone->select("count(*) as total")->build();
-      $countResult = self::$db->query($countSql);
+      $countResult = self::query($countSql, $types, $params);
+      //print_r($countResult);
+      //print_r($sqlBuilder);
+
+      if ($countResult){
+        $result["total"] = $countResult->fetch_assoc()["total"];
+        $result["totalPages"] = ceil($result["total"] / $itemPerPage);
+        $result["active"] = $page;
+  
+        $sql = $sqlBuilder->paginate($page, $itemPerPage)->build();
+        //print_r($sql);
+  
+        $result["data"] = self::select($sql, $types, $params);
+  
+        return $result;
+      }
       
-      $result["total"] = $countResult->fetch_assoc()["total"];
-      $result["totalPages"] = ceil($result["total"] / $itemPerPage);
-      $result["active"] = $page;
-
-      $sql = $sqlBuilder->paginate($page, $itemPerPage)->build();
-      //print_r($sql);
-
-      $result["data"] = self::select($sql);
-
-      return $result;
+      return null;
     }
   }
 

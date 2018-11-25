@@ -32,7 +32,7 @@ create table BRANCH
    BRANCH_ID            int not null auto_increment,
    NAME                 varchar(40),
    URL                  varchar(20),
-   VERSION              int,
+   VERSION              int default 1,
    primary key (BRANCH_ID)
 );
 
@@ -44,7 +44,7 @@ create table CATEGORY
    CATEGORY_ID          int not null auto_increment,
    NAME                 varchar(40),
    URL                  varchar(20),
-   VERSION              int,
+   VERSION              int default 1,
    primary key (CATEGORY_ID)
 );
 
@@ -55,11 +55,11 @@ create table ORDERS
 (
    ORDER_ID             int not null auto_increment,
    USERNAME             char(50),
-   ORDER_DATE           datetime,
+   ORDER_DATE           datetime default current_timestamp,
    RECEIVE_DATE         datetime,
-   STATUS               int,
+   STATUS               int default 0,
    PRICE                decimal,
-   VERSION              int,
+   VERSION              int default 1,
    primary key (ORDER_ID)
 );
 
@@ -72,7 +72,7 @@ create table ORDERS_DETAIL
    PRODUCT_ID           int not null,
    QUANTITY             int not null,
    COLOR                varchar(10),
-   VERSION              int,
+   VERSION              int default 1,
    primary key (ORDER_ID, PRODUCT_ID)
 );
 
@@ -93,7 +93,7 @@ create table PRODUCT
    DETAIL               text,
    QUANTITY             int,
    TIME_STAMP           datetime default current_timestamp,
-   VERSION              int,
+   VERSION              int default 1,
    primary key (PRODUCT_ID)
 );
 
@@ -103,12 +103,12 @@ create table PRODUCT
 create table USERS
 (
    USERNAME             char(50) not null,
-   PASSWORD             char(50) not null,
+   PASSWORD             char(100) not null,
    NAME                 varchar(50),
    PHONE                char(11),
    ADDRESS              varchar(255),
-   TYPE                 int,
-   VERSION              int,
+   TYPE                 int default 1,
+   VERSION              int default 1,
    primary key (USERNAME)
 );
 

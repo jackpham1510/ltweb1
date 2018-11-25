@@ -13,6 +13,7 @@ import Product from '../routes/Product';
 import ProductDetail from '../routes/ProductDetail';
 import SearchResult from '../routes/SearchResult';
 import Login from '../routes/Login';
+import Register from '../routes/Register';
 
 export default class App extends Component {
 	/** Gets fired when the route changes.
@@ -57,6 +58,7 @@ export default class App extends Component {
 							<ProductDetail path="/san-pham/:category/:branch/:productUrl" {...this.state}></ProductDetail>
 							<SearchResult path="/tim-kiem" {...this.state}></SearchResult>
 							<Login path="/dang-nhap"></Login>
+							<Register path="/dang-ky"></Register>
 						</Router>
 					</div>
 				}
