@@ -1,21 +1,41 @@
 import { h, Component } from 'preact';
 import { Link } from 'preact-router/match';
 
-import { Menu, Input } from 'element-react';
+import { Menu, Input, Badge } from 'element-react';
 import { route } from 'preact-router';
+import authen from '../utils/authen';
+import cart from '../utils/cart';
 
 export default class Header extends Component{
 	state = {
-		menu: window.innerWidth >= 992
+		menu: window.innerWidth >= 992,
+		count: 0,
+	}
+	constructor(props){
+		super(props);
+		
+	}
+	componentWillReceiveProps(props) {
+		if (props.isAuthen !== this.props.isAuthen && props.isAuthen){
+			console.log('authen');
+			cart.subscribe('cart_count', count => this.setState({ count }));
+			this.setState({
+				count: cart.countItems(props.user['USERNAME'])
+			});
+		}
 	}
 	render(){
-		const { categories } = this.props;
-		const { menu } = this.state;
+		const { categories, isAuthen, user } = this.props;
+		const { menu, count } = this.state;
+
+		const username = isAuthen && user['USERNAME'];
+		//console.log('username', username);
+
 		return (
 			<div>
 				<Menu theme="light" defaultActive="1" className="el-menu-demo container bg-white mb-5 header" mode="horizontal">
 					<Menu.Item index="1" className="text-primary fw-bold fs-20 px-0 mr-10 bd-0 bg-white header-brand">
-						<Link href="/" style="text-decoration: none !important">
+						<Link href="/" style="text-decoration: none !important; color: #20a0ff !important">
 							<img src="../assets/logo.svg" width="64" alt="Logo" style="margin-left: -22px"/> DigiShop
 						</Link>
 						<i class="fa fa-navicon float-right mt-20" onClick={this.menuBtnClick}></i>
@@ -38,11 +58,31 @@ export default class Header extends Component{
 							))}
 						</Menu.SubMenu>
 						<Menu.Item index="4" className="px-0 mr-30 bg-white">
-							<Link href="/gio-hang"><i class="fa fa-shopping-cart mr-10" style="margin-top: -5px"></i>Giỏ hàng</Link>
+							<Link href="/gio-hang">
+							{
+								count !== 0 ? 
+								<Badge value={count}>
+									<i class="fa fa-shopping-cart mr-10" style="margin-top: -5px"></i>Giỏ hàng
+								</Badge> :
+								<span class="d-inline-block" style="margin-top: -5px"><i class="fa fa-shopping-cart mr-10" style="margin-top: -5px"></i>Giỏ hàng</span>
+							}
+							</Link>
 						</Menu.Item>
-						<Menu.Item index="5" className="px-0 bg-white" index="5">
-							<Link href="/dang-nhap"><i class="mr-10 fa fa-sign-in" style="margin-top: -5px"></i>Đăng nhập</Link>
-						</Menu.Item>
+						{
+							!username ? 
+							<Menu.Item index="5" className="px-0 bg-white" index="5">
+								<Link href="/dang-nhap"><i class="mr-10 fa fa-sign-in" style="margin-top: -5px"></i>Đăng nhập</Link>	
+							</Menu.Item>
+							:
+							<Menu.SubMenu index="5" title={<span><i class="mr-10 fa fa-user" style="margin-top: -5px"></i>{username}</span>}>
+								<Link href="/tai-khoan/cap-nhat">
+									<Menu.Item index="5.1"><i class="mr-10 el-icon-edit" style="margin-top: -5px"></i>Cập nhật</Menu.Item>
+								</Link>
+								<Link onClick={e => authen.Logout()}>
+									<Menu.Item index="5.2"><i class="mr-10 fa fa-sign-out" style="margin-top: -5px"></i>Đăng xuất</Menu.Item>
+								</Link>
+							</Menu.SubMenu>
+						}
 					</div>
 				</Menu>
 				<Menu theme="light" className={`bg-primary nav-menu container ${menu ? '' : 'd-none'}`} mode="horizontal">

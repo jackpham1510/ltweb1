@@ -10,28 +10,41 @@
     }
 
     public static function Add($user){
-      if (self::Validate($user)){
-        $sql = SqlBuilder::from('users(username, name, password, phone, address)')
-          ->insert('?,?,?,?,?')
-          ->build();
+      $sql = SqlBuilder::from('users(username, name, password, phone, address)')
+        ->insert('?,?,?,?,?')
+        ->build();
 
-        $password = password_hash($user['password'], PASSWORD_DEFAULT);
+      $password = password_hash($user['password'], PASSWORD_DEFAULT);
 
-        $rs = Provider::query($sql, 'sssss', [$user['username'], $user['name'], $password, $user['phone'], $user['address']], true);
+      $rs = Provider::query($sql, 'sssss', [$user['username'], $user['name'], $password, $user['phone'], $user['address']], true);
 
-        if ($rs) {
-          return Self::GenerateToken($user['username']);
-        }
+      if ($rs) {
+        return Self::GenerateToken($user['username']);
       }
       
       return false;
     }
 
-    public static function Validate($user){
-      if (strlen($user['username']) < 4 || strlen($user['password']) < 6 || strlen($user['phone']) < 9 || strlen($user['address']) < 1){
-        return false;
+    public static function Update($user){
+      $updateStr = 'name=?,phone=?,address=?';
+      $paramStr = 'ssss';
+      $params = [$user['name'], $user['phone'], $user['address']];
+
+      if (Util::isKeyExists('password', $user) && $user['password'] !== ''){
+        $updateStr .= ',password=?';
+        $paramStr .= 's';
+        $password = password_hash($user['password'], PASSWORD_DEFAULT);
+        array_push($params, $password);
       }
-      return true;
+
+      array_push($params, $user['username']);
+
+      $sql = SqlBuilder::from('users')
+        ->update($updateStr)
+        ->where('username=?')
+        ->build();
+
+      return Provider::query($sql, $paramStr, $params, true);
     }
 
     public static function GenerateToken($username){
@@ -39,7 +52,7 @@
         "username" => $username
       ];
 
-      return JWT::encode(["token" => $token], Config::getValue('token_secret_key'));
+      return JWT::encode($token, Config::getValue('token_secret_key'));
     }
 
     public static function Login($input){
@@ -52,13 +65,14 @@
       return false;
     }
 
-    public static function Authen($user){
+    public static function Authen(){
       $headers = getallheaders();
       if (array_key_exists('Authorization', $headers)) {
           $jwt = $headers['Authorization'];
           $token = JWT::decode($jwt, Config::getValue('token_secret_key'));
-          
-          return $token['username'];
+          //print_r($token);
+
+          return $token->username;
       }
 
       return false;

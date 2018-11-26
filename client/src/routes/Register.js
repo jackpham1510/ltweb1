@@ -1,8 +1,8 @@
 import { h, Component } from 'preact';
-import { Form, Input, Button } from 'element-react';
-import { Link } from 'preact-router';
+import { Form, Input, Button, Notification } from 'element-react';
+import { Link, route } from 'preact-router';
 import utils from '../utils';
-import config from '../../../config.json';
+import authen from '../utils/authen';
 
 export default class Register extends Component {
   state = {
@@ -23,11 +23,11 @@ export default class Register extends Component {
             } 
             else if (value.match(/\W+/)) {
               callback(new Error('Tên đăng nhập không được chứa kí tự đặc biệt'))
-            } 
+            }
             callback();
         } },
         { validator: (rule, value, callback) => {
-          if (value.length >= 4){
+          if (this.props.type !== 'cap-nhat' && value.length >= 4){
             setTimeout(function (){
               utils.fetch(`users/check?name=${value}`, function (rs){
                 //console.log(rs);
@@ -38,11 +38,16 @@ export default class Register extends Component {
               });
             }, 500);
           }
+          callback();
         }, trigger: 'blur' }
       ],
       password: [
-        { required: true, message: 'Vui lòng điền mật khẩu', trigger: 'blur' },
+        { required: this.props.type !== 'cap-nhat', message: 'Vui lòng điền mật khẩu', trigger: 'blur' },
         { validator: (rule, value, callback) => {
+            if (this.props.type === 'cap-nhat' && !value){
+              callback();
+              return;
+            }
             if (value.length < 6){
               callback(new Error('Mật khẩu phải có ít nhất 6 kí tự'));
             }
@@ -53,8 +58,12 @@ export default class Register extends Component {
         } }
       ],
       repassword: [
-        { required: true, message: 'Vui lòng xác nhận lại mật khẩu', trigger: 'blur' },
+        { required: this.props.type !== 'cap-nhat', message: 'Vui lòng xác nhận lại mật khẩu', trigger: 'blur' },
         { validator: (rule, value, callback) => {
+            if (this.props.type === 'cap-nhat' && !value){
+              callback();
+              return;
+            }
             if (value !== this.state.form.password){
               callback(new Error('Xác nhận mật khẩu không chính xác'));
             }
@@ -82,16 +91,35 @@ export default class Register extends Component {
   
   formRef = null;
 
+  constructor(props){
+    super(props);
+
+    if (props.type === 'cap-nhat'){
+      let { user } = props;
+      this.setState({
+        form: {
+          username: user['USERNAME'],
+          name: user['NAME'],
+          phone: user['PHONE'],
+          address: user['ADDRESS']
+        }
+      });
+    }
+  }
+
   render(){
     const { form, rules } = this.state;
+    const isUpdate = this.props.type === 'cap-nhat';
+
     return (
       <div class="container pt-20">
         <Form ref={el => this.formRef = el} model={form} rules={rules} style={{ maxWidth: '500px', margin: 'auto' }}>
-          <h2 align="center" class="text-primary">Đăng ký</h2>
+          <h2 align="center" class="text-primary">{isUpdate ? 'Cập nhật tài khoản' : 'Đăng ký'}</h2>
+          <hr class="bd-0" style="border-top: 1px solid #20a0ff !important" />
           <Form.Item label="Tên tài khoản" prop="username">
-            <Input value={this.state.form.username} onChange={this.onChange.bind(this, 'username')}></Input>
+            <Input value={this.state.form.username} onChange={this.onChange.bind(this, 'username')} disabled={isUpdate}></Input>
           </Form.Item>
-          <Form.Item label="Mật khẩu" prop="password">
+          <Form.Item label={isUpdate ? "Mật khẩu mới" : "Mật khẩu"} prop="password">
             <Input type="password" value={this.state.form.password} onChange={this.onChange.bind(this, 'password')}></Input>
           </Form.Item>
           <Form.Item label="Xác nhận mật khẩu" prop="repassword">
@@ -107,8 +135,10 @@ export default class Register extends Component {
             <Input type="textarea" autosize={{ minRows: 3}} value={this.state.form.address} onChange={this.onChange.bind(this, 'address')}></Input>
           </Form.Item>
           <Form.Item className="mt-30">
-            <Button type="primary" className="width-100" onClick={this.handleSubmit}>Đăng ký</Button>
-            <p align="center">Hoặc quay lại <Link href="/dang-nhap" class="text-primary">trang đăng nhập</Link></p>
+            <Button type="primary" className="width-100" onClick={this.handleSubmit}>{isUpdate ? 'Cập nhật' : 'Đăng ký'}</Button>
+            {
+              !isUpdate && <p align="center">Hoặc quay lại <Link href="/dang-nhap" class="text-primary">trang đăng nhập</Link></p>
+            }
           </Form.Item>
         </Form>
       </div>
@@ -122,21 +152,32 @@ export default class Register extends Component {
   }
   handleSubmit = (e) => {
     e.preventDefault();
-
-    this.formRef.validate(async (valid) => {
+    this.formRef.validate((valid) => {
       if (valid){
-        let res = await fetch(`${config.serverhost}/users/add`, {
-          method: 'post',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(this.state.form)
+        const isUpdate = this.props.type === 'cap-nhat';
+        console.log(this.state.form);
+        utils.post(isUpdate ? 'users/update' : 'users/add', this.state.form, res => {
+          if (res){
+            if (isUpdate){
+              Notification({
+                type: 'success',
+                title: 'Thông báo',
+                message: `Cập nhật tài khoản thành công!`
+              });
+            }
+            else {
+              authen.saveToken(res);
+              window.location.pathname = "/"
+            }
+          }
+          else {
+            Notification({
+              type: 'danger',
+              title: 'Thông báo',
+              message: `${isUpdate ? 'Cập nhật' : 'Đăng ký'} tài khoản thất bại, vui lòng tải lại trang và thử lại!`
+            });
+          }
         });
-        let data = await res.text();
-        //console.log(data);
-        if (data){
-          console.log(data);
-        }
       }
     });
   }

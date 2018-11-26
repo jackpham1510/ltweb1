@@ -3,6 +3,17 @@
   "dirname": "/ltweb1/server",
   "serverhost": "http://localhost:6969/ltweb1/server",
   "token_secret_key": "1660125_phamquantiendung",
+  "token_name": "digishop_token",
+  "local_cart": "digishop_cart",
+  "local_user": "digishop_user",
+  "must_authen_list": [
+    "/tai-khoan/cap-nhat",
+    "/gio-hang"
+  ],
+  "must_not_authen_list": [
+    "/tai-khoan/dang-ky",
+    "/dang-nhap"
+  ],
   "db_connection": {
     "servername": "localhost:3306",
     "username": "root",

@@ -60,11 +60,23 @@ export default new (function() {
     return m.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") + '₫';
   }
 
-  self.fetch = async (path, cb) => {
-    let res = await fetch(`${config.serverhost}/${path}`);
+  self.fetch = async (path, cb, options = {}) => {
+    let res = await fetch(`${config.serverhost}/${path}`, options);
+    //console.log(await res.text());
     let data = await res.json();
     cb(data);
   }
+
+  self.post = (path, body, cb) => {
+    self.fetch(path, cb, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    });
+  }
+
   self.fetchProduct = async (path, cb) => {
     self.fetch(`product/${path}`, res => {
       //console.log(res);
@@ -105,6 +117,7 @@ export default new (function() {
       }
     }, 1);
   }
+  
   self.routeParams = (url, newParams) => {
     let currParams = self.parseUrl(url);
 

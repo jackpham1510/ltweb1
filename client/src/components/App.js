@@ -1,5 +1,6 @@
 import { h, Component } from 'preact';
-import { Router } from 'preact-router';
+import { Router, route } from 'preact-router';
+import { Notification } from 'element-react';
 
 import utils from '../utils';
 import config from '../../../config.json';
@@ -14,19 +15,15 @@ import ProductDetail from '../routes/ProductDetail';
 import SearchResult from '../routes/SearchResult';
 import Login from '../routes/Login';
 import Register from '../routes/Register';
+import authen from '../utils/authen';
+import Cart from '../routes/Cart';
 
 export default class App extends Component {
-	/** Gets fired when the route changes.
-	 *	@param {Object} event		"change" event from [preact-router](http://git.io/preact-router)
-	 *	@param {string} event.url	The newly routed URL
-	 */
-	handleRoute = e => {
-		this.currentUrl = e.url;
-	};
-
 	state = {
 		categories: [],
-		branchs: []
+		branchs: [],
+		user: null,
+		isAuthen: false
 	};
 
 	constructor(props){
@@ -42,10 +39,42 @@ export default class App extends Component {
 			.then(categories => this.setState({
 				categories: utils.flat(categories, 'CATEGORY_ID')
 			}));
+		
+		(async () => {
+			let isAuthen = await authen.isAuthenticated();
+			if (isAuthen){
+				this.setState({
+					user: authen.getUser(),
+					isAuthen: isAuthen
+				}, () => {
+					Notification({
+						type: 'success',
+						title: 'Lời nhắn',
+						message: `Xin chào ${this.state.user['NAME']}!`
+					});
+				});
+			}
+		})();
+	}
+
+	handleRoute = async e => {
+		let mustAuthen = config['must_authen_list'].includes(e.url);
+		let mustNotAuthen = config['must_not_authen_list'].includes(e.url);
+
+		if (mustAuthen || mustNotAuthen){
+			let isAuthen = await authen.isAuthenticated();
+		
+			if (mustAuthen && !isAuthen){
+				route('/dang-nhap');
+			}
+			else if (mustNotAuthen && isAuthen){
+				route('/');
+			}
+		}
 	}
 
 	render() {
-		const { categories, branchs } = this.state;
+		const { categories, branchs, user } = this.state;
 		return (
 			<div id="app">
 				<Header {...this.state} />
@@ -58,7 +87,8 @@ export default class App extends Component {
 							<ProductDetail path="/san-pham/:category/:branch/:productUrl" {...this.state}></ProductDetail>
 							<SearchResult path="/tim-kiem" {...this.state}></SearchResult>
 							<Login path="/dang-nhap"></Login>
-							<Register path="/dang-ky"></Register>
+							<Register path="/tai-khoan/:type" user={user}></Register>
+							<Cart path="/gio-hang" {...this.state}></Cart>
 						</Router>
 					</div>
 				}

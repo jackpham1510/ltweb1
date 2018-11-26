@@ -1168,6 +1168,19 @@ a:hover {
   background: #fff !important;
 }
 
+.el-badge__content.is-fixed {
+  top: 18px !important;
+  right: 5px !important;
+}
+
+.el-submenu.is-active .el-submenu__title {
+  border-color: #fff;
+}
+
+.el-menu--horizontal.el-menu--dark .el-submenu .el-menu-item.is-active, .el-menu-item.is-active {
+  color: #48576a !important;
+}
+
 .card-body {
   height: 400px;
   cursor: pointer;

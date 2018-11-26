@@ -1,22 +1,11 @@
 import { h, Component } from 'preact';
-import { Link } from 'preact-router';
-import { Layout, Button, InputNumber, Table } from 'element-react';
+import { Link, route } from 'preact-router';
+import { Layout, Button, InputNumber, Table, MessageBox } from 'element-react';
 
 import ProductList from '../components/ProductList';
 
 import utils from '../utils';
-
-// const vnColor = {
-//   den: 'Đen',
-//   hong: 'Hồng',
-//   trang: 'Trắng',
-//   vang: 'Vàng',
-//   xam: 'Xám',
-//   gold: 'Gold',
-//   do: 'Đỏ',
-//   'vang-dong': 'Vàng đồng',
-//   'xanh-duong': 'Xanh dương'
-// }
+import cart from '../utils/cart';
 
 export default class ProductDetail extends Component{
   state = {
@@ -29,6 +18,8 @@ export default class ProductDetail extends Component{
     { label: "Tên", prop: "name" },
     { label: "Giá trị", prop: "value" }
   ]
+  quantityRef = null
+
   constructor(props){
     super(props);
     this.fetchData(props);
@@ -54,6 +45,31 @@ export default class ProductDetail extends Component{
     utils.fetchProduct(`by?category=${props.category}&&ipp=5&&page=1`, res => this.setState({ relativeCategory: res.data }));
     if (props.branch !== 'tat-ca'){
       utils.fetchProduct(`by?branch=${props.branch}&&ipp=5&&page=1`, res => this.setState({ relativeBranch: res.data }));
+    }
+  }
+  addToCart = async e => {
+    if (this.props.isAuthen){
+      //console.log();
+      let username = this.props.user['USERNAME'];
+      let { product, selectedColor } = this.state;
+      let { category, branch } = this.props;
+      
+      //console.log(username, product);
+      
+      cart.updateItem(username, category, branch, product, this.quantityRef.state.value, selectedColor);
+    }
+    else {
+      let action = await MessageBox.msgbox({
+        title: 'Thông báo',
+        message: 'Bạn phải đăng nhập trước đã!', 
+        confirmButtonText: 'Đăng nhập ngay',
+        cancelButtonText: 'Hủy bỏ',
+        showCancelButton: true
+      });
+  
+      if (action === 'confirm'){
+        route('/dang-nhap');
+      }
     }
   }
   render(){
@@ -104,11 +120,11 @@ export default class ProductDetail extends Component{
             <p class="fs-17">{detail['desc']}</p>
             <hr class="bd-0 bd-t-1 mb-30" />
             <p class="fs-16 mb-30">
-              Chọn số lượng: <InputNumber className="ml-10" defaultValue={1} min="1" max={product['QUANTITY']}></InputNumber>
+              Chọn số lượng: <InputNumber ref={el => this.quantityRef = el} className="ml-10" defaultValue={1} min="1" max={product['QUANTITY']}></InputNumber>
               <small class="text-danger ml-20">Chỉ còn lại {product['QUANTITY']} sản phẩm!</small>
             </p>
             <Button type="danger" size="large" className="mr-10 font-weight-bold">Mua ngay</Button>
-            <Button type="primary" size="large" className="font-weight-bold">Thêm vào giỏ hàng</Button>
+            <Button type="primary" size="large" className="font-weight-bold" onClick={this.addToCart}>Thêm vào giỏ hàng</Button>
           </Layout.Col>
         </Layout.Row>
         <h2 class="mt-30">Thông số kỹ thuật</h2>

@@ -1,8 +1,8 @@
 import { h, Component } from 'preact';
-import { Form, Input, Button } from 'element-react';
+import { Form, Input, Button, Notification } from 'element-react';
 import { Link } from 'preact-router';
 import utils from '../utils';
-import config from '../../../config.json';
+import authen from '../utils/authen';
 
 export default class Login extends Component {
   state = {
@@ -22,16 +22,13 @@ export default class Login extends Component {
   
   formRef = null;
 
-  componentDidMount() {
-    this.formRef.base.onsubmit = this.login;
-  }
-
   render(){
     const { form, rules } = this.state;
     return (
       <div class="container py-20">
         <Form ref={el => this.formRef = el} model={form} rules={rules} style={{ maxWidth: '500px', margin: 'auto' }}>
           <h2 align="center" class="text-primary">Đăng nhập</h2>
+          <hr class="bd-0" style="border-top: 1px solid #20a0ff !important" />
           <Form.Item label="Tên đăng nhập" prop="username">
             <Input value={form.username} onChange={this.onChange.bind(this, 'username')}></Input>
           </Form.Item>
@@ -40,7 +37,7 @@ export default class Login extends Component {
           </Form.Item>
           <Form.Item>
             <Button type="primary" className="width-100 mt-10" onClick={this.login}>Đăng nhập</Button>
-            <p align="center">Bạn chưa có tài khoản? <Link href="/dang-ky" class="text-primary">Đăng ký ngay</Link></p>
+            <p align="center">Bạn chưa có tài khoản? <Link href="/tai-khoan/dang-ky" class="text-primary">Đăng ký ngay</Link></p>
           </Form.Item>
         </Form>
       </div>
@@ -56,26 +53,24 @@ export default class Login extends Component {
     e.preventDefault();
     
     //console.log(this.formRef);
+    console.log('submit');
 
-    this.formRef.validate(async (valid) => {
+    this.formRef.validate((valid) => {
       //console.log(valid);
       if (valid){
-        let res = await fetch(`${config.serverhost}/users/login`, {
-          method: 'post',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(this.state.form)
+        utils.post('users/login', this.state.form, res => {
+          if (res){
+            authen.saveToken(res);
+            window.location.pathname = "/"
+          }
+          else {
+            Notification({
+              type: 'error',
+              title: 'Đăng nhập thất bại',
+              message: `Đăng nhập thất bại, tên tài khoản hoặc mật khẩu không chính xác!`
+            });
+          }
         });
-        
-        let data = await res.json();
-        //console.log(data);
-        if (data){
-          console.log(data);
-        }
-        else {
-          alert(false);
-        }
       }
     });
   }
