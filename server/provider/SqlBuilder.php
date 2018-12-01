@@ -97,7 +97,7 @@
           $sql = "insert into $this->qfrom values($this->qinsert)";
           break;
       }
-      $sql = strip_tags($sql);
+      //$sql = strip_tags($sql);
       return $sql . ";";
     }
   }

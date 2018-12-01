@@ -1,18 +1,20 @@
 import { h, Component } from 'preact';
-import { Link, route } from 'preact-router';
+import { route } from 'preact-router';
 import { Layout, Button, InputNumber, Table, MessageBox } from 'element-react';
 
 import ProductList from '../components/ProductList';
 
 import utils from '../utils';
 import cart from '../utils/cart';
+import { BuyDialog } from '../components/BuyDialog';
 
 export default class ProductDetail extends Component{
   state = {
     product: null,
     relativeCategory: null,
     relativeBranch: null,
-    selectedColor: null
+    selectedColor: null,
+    buyDialog: null
   }
   specColumns = [
     { label: "Tên", prop: "name" },
@@ -47,34 +49,48 @@ export default class ProductDetail extends Component{
       utils.fetchProduct(`by?branch=${props.branch}&&ipp=5&&page=1`, res => this.setState({ relativeBranch: res.data }));
     }
   }
-  addToCart = async e => {
-    if (this.props.isAuthen){
-      //console.log();
-      let username = this.props.user['USERNAME'];
-      let { product, selectedColor } = this.state;
-      let { category, branch } = this.props;
-      
-      //console.log(username, product);
-      
-      cart.updateItem(username, category, branch, product, this.quantityRef.state.value, selectedColor);
-    }
-    else {
-      let action = await MessageBox.msgbox({
-        title: 'Thông báo',
-        message: 'Bạn phải đăng nhập trước đã!', 
-        confirmButtonText: 'Đăng nhập ngay',
-        cancelButtonText: 'Hủy bỏ',
-        showCancelButton: true
-      });
-  
-      if (action === 'confirm'){
-        route('/dang-nhap');
-      }
+  showAuthenAlert = async () => {
+    let action = await MessageBox.msgbox({
+      title: 'Thông báo',
+      message: "Bạn phải đăng nhập trước đã!", 
+      confirmButtonText: 'Đăng nhập ngay',
+      cancelButtonText: 'Hủy bỏ',
+      showCancelButton: true
+    });
+
+    if (action === 'confirm'){
+      route('/dang-nhap');
     }
   }
+  addToCart = e => {
+    if (this.props.isAuthen){
+      cart.updateItem(
+        this.props.user['USERNAME'], 
+        this.state.product, 
+        this.quantityRef.state.value);
+    }
+    else {
+      this.showAuthenAlert();
+    }
+  }
+
+  payment = e => {
+    if (this.props.isAuthen){
+      this.setState({
+        buyDialog: [{
+          ...this.state.product,
+          quantity: this.quantityRef.state.value
+        }]
+      });
+    }
+    else {
+      this.showAuthenAlert();
+    }
+  }
+
   render(){
-    const { category, branch, categories, branchs } = this.props
-    const { product, relativeBranch, relativeCategory, selectedColor } = this.state;
+    const { category, branch, categories, branchs, user } = this.props
+    const { product, relativeBranch, relativeCategory, selectedColor, buyDialog } = this.state;
     let detail, imgList, spec = null;
     
     if (product){
@@ -85,12 +101,14 @@ export default class ProductDetail extends Component{
         spec = detail.spec.map(sp => ({ name: sp[0], value: sp[1] }));
       }
     }
+
     return (
       product &&
       <div class="container pt-30">
+        <BuyDialog user={user} items={buyDialog} close={() => this.setState({ buyDialog: null })}></BuyDialog>
         <Layout.Row>
           <Layout.Col sm={10} className="mb-30">
-            <Layout.Col xs={6} sm={6}>
+            <Layout.Col xs={6} sm={6} className="color-list">
             {
               Object.keys(imgList).map(color => (
                 <Layout.Row className="d-flex fl-x-center mb-15 pointer hover-light">
@@ -107,7 +125,7 @@ export default class ProductDetail extends Component{
             </Layout.Col>
           </Layout.Col>
           <Layout.Col sm={14}>
-            <h2>{product['NAME']} ({selectedColor})</h2>
+            <h2>{product['NAME']}</h2>
             <p>{product['SUBTITLE']}</p>
             <h1 class="text-danger">{utils.formatMoney(product['PRICE'])}</h1>
             <p className="text-dark mt-5 width-100">
@@ -123,7 +141,7 @@ export default class ProductDetail extends Component{
               Chọn số lượng: <InputNumber ref={el => this.quantityRef = el} className="ml-10" defaultValue={1} min="1" max={product['QUANTITY']}></InputNumber>
               <small class="text-danger ml-20">Chỉ còn lại {product['QUANTITY']} sản phẩm!</small>
             </p>
-            <Button type="danger" size="large" className="mr-10 font-weight-bold">Mua ngay</Button>
+            <Button type="danger" size="large" className="mr-10 font-weight-bold" onClick={this.payment}>Mua ngay</Button>
             <Button type="primary" size="large" className="font-weight-bold" onClick={this.addToCart}>Thêm vào giỏ hàng</Button>
           </Layout.Col>
         </Layout.Row>

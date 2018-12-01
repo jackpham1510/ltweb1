@@ -7,6 +7,7 @@
   require_once "routes/Branch.php";
   require_once "routes/Banner.php";
   require_once "routes/Users.php";
+  require_once "routes/Orders.php";
 
   header("Access-Control-Allow-Origin: *");
   header('Access-Control-Allow-Methods: GET, POST');

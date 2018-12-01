@@ -1181,6 +1181,14 @@ a:hover {
   color: #48576a !important;
 }
 
+.el-dialog__body {
+  padding-top: 0;
+}
+
+.el-dialog__wrapper {
+  display: block !important;
+}
+
 .card-body {
   height: 400px;
   cursor: pointer;
@@ -1212,6 +1220,10 @@ a:hover {
 }
 
 @media (max-width: 768px) {
+  .color-list {
+    max-height: 350px;
+    overflow: auto;
+  }
   img.branch {
     width: 160px !important;
   }

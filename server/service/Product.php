@@ -41,6 +41,15 @@
       return Provider::select($sql, 's', [$url])[0];
     }
 
+    static function getInIdList($idList){
+      $sql = SqlBuilder::from('product')
+      ->where("product_id in $idList")
+      ->select()
+      ->build();
+    
+      return Provider::select($sql);
+    }
+
     static function search(string $input, int $page, int $ipp){
       $input = preg_replace('/[\W_]+/', "%", $input);
       $s = "%$input%";
@@ -95,6 +104,8 @@
           $price_to = $req['price_to'];
           $types .= 'ii';
           array_push($params, $price_from, $price_to);
+
+          //echo $sql->qwhere. " and (p.price >= ? and p.price <= ?)";
 
           $sql->where($sql->qwhere. " and (p.price >= ? and p.price <= ?)");
         }

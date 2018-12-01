@@ -46,7 +46,7 @@ export default class Header extends Component{
 						</form>
 					</Menu.Item>
 					<div className={`header-right float-right ${menu ? '' : 'd-none'}`}>
-						<Menu.SubMenu index="3" className="mr-30" title={<span><i class="mr-10 fa fa-link" style="margin-top: -5px"></i>Liên hệ</span>}>
+						<Menu.SubMenu className="mr-30" index="3" title={<span><i class="mr-10 fa fa-link" style="margin-top: -5px"></i>Liên hệ</span>}>
 							{[
 								['Facebook', 'facebook-square', 'https://fb.com/cpt.jack1998'],
 								['LinkedIn', 'linkedin-square', 'https://www.linkedin.com/in/phamquantiendung/'],
@@ -78,8 +78,11 @@ export default class Header extends Component{
 								<Link href="/tai-khoan/cap-nhat">
 									<Menu.Item index="5.1"><i class="mr-10 el-icon-edit" style="margin-top: -5px"></i>Cập nhật</Menu.Item>
 								</Link>
+								<Link href="/lich-su-mua-hang/1">
+									<Menu.Item index="5.2"><i class="mr-10 fa fa-shopping-cart" style="margin-top: -5px"></i>Lịch sử mua hàng</Menu.Item>
+								</Link>
 								<Link onClick={e => authen.Logout()}>
-									<Menu.Item index="5.2"><i class="mr-10 fa fa-sign-out" style="margin-top: -5px"></i>Đăng xuất</Menu.Item>
+									<Menu.Item index="5.3"><i class="mr-10 fa fa-sign-out" style="margin-top: -5px"></i>Đăng xuất</Menu.Item>
 								</Link>
 							</Menu.SubMenu>
 						}

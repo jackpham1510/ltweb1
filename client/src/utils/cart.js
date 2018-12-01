@@ -2,31 +2,22 @@ import config from '../../../config.json';
 import { Observable } from './Observable';
 
 class CartService extends Observable {
-  async updateItem(username, category, branch, product, quantity, color){
+  updateItem(username, product, quantity){
     let items = this.getItems(username);
 
-    let key = product['PRODUCT_ID']+'_'+color;
+    let key = product['PRODUCT_ID'];
 
     if (key in items){
       quantity = items[key].quantity + quantity;
     }
 
-    items[key] = { 
-      quantity, color, category, branch, 
-      id: product['PRODUCT_ID'],
-      productName: product['NAME'],
-      url: product['URL'],
-      price: product['PRICE'],
-      image: product['DETAIL'].images.items[color] 
-    };
-
-    //console.log('update-cart', items);
+    items[key] = { quantity };
 
     this.saveItems(username, items);
     this.publish('cart_count', this.countItems(username));
   }
 
-  async removeItem(username, id) {
+  removeItem(username, id) {
     let items = this.getItems(username);
 
     delete items[id];
@@ -60,6 +51,7 @@ class CartService extends Observable {
   clear(username){
     localStorage.removeItem(config['local_cart']+'_'+username);
     this.publish('cart_count', 0);
+    this.publish('cart_update');
   }
 }
 

@@ -61,7 +61,7 @@ export default class Login extends Component {
         utils.post('users/login', this.state.form, res => {
           if (res){
             authen.saveToken(res);
-            window.location.pathname = "/"
+            window.location.pathname = window.sessionStorage.getItem('last_url');
           }
           else {
             Notification({

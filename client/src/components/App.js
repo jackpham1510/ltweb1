@@ -17,6 +17,7 @@ import Login from '../routes/Login';
 import Register from '../routes/Register';
 import authen from '../utils/authen';
 import Cart from '../routes/Cart';
+import BuyHistory from '../routes/BuyHistory';
 
 export default class App extends Component {
 	state = {
@@ -44,7 +45,7 @@ export default class App extends Component {
 			let isAuthen = await authen.isAuthenticated();
 			if (isAuthen){
 				this.setState({
-					user: authen.getUser(),
+					user: authen.user,
 					isAuthen: isAuthen
 				}, () => {
 					Notification({
@@ -60,16 +61,19 @@ export default class App extends Component {
 	handleRoute = async e => {
 		let mustAuthen = config['must_authen_list'].includes(e.url);
 		let mustNotAuthen = config['must_not_authen_list'].includes(e.url);
-
+		
 		if (mustAuthen || mustNotAuthen){
 			let isAuthen = await authen.isAuthenticated();
-		
+
 			if (mustAuthen && !isAuthen){
 				route('/dang-nhap');
 			}
 			else if (mustNotAuthen && isAuthen){
 				route('/');
 			}
+		}
+		else {
+			window.sessionStorage.setItem('last_url', e.url);
 		}
 	}
 
@@ -79,7 +83,7 @@ export default class App extends Component {
 			<div id="app">
 				<Header {...this.state} />
 				{
-					branchs && categories &&
+					branchs && categories && user &&
 					<div class="mt-20 mb-40">
 						<Router onChange={this.handleRoute}>
 							<Home path="/" {...this.state} />
@@ -89,6 +93,7 @@ export default class App extends Component {
 							<Login path="/dang-nhap"></Login>
 							<Register path="/tai-khoan/:type" user={user}></Register>
 							<Cart path="/gio-hang" {...this.state}></Cart>
+							<BuyHistory path="/lich-su-mua-hang/:page" {...this.state}></BuyHistory>
 						</Router>
 					</div>
 				}

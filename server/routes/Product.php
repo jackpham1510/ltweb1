@@ -46,5 +46,15 @@
       ProductService::incView($url);
       return ProductService::getByUrl($url);
     }
+
+    return null;
+  });
+
+  Router::get('/product/in', function ($req){
+    if (Util::isKeyExists('idlist', $req)){
+      return ProductService::getInIdList($req['idlist']);
+    }
+
+    return null;
   });
 ?>

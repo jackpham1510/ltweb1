@@ -4,8 +4,13 @@
   "serverhost": "http://localhost:6969/ltweb1/server",
   "token_secret_key": "1660125_phamquantiendung",
   "token_name": "digishop_token",
-  "local_cart": "digishop_cart",
-  "local_user": "digishop_user",
+  "local_cart": "digishop_cart", 
+  "order_status": {
+    "0": "Đang chờ xác nhận",
+    "1": "Đang giao hàng",
+    "2": "Đã nhận hàng",
+    "-1": "Đơn hàng đã bị hủy"
+  },
   "must_authen_list": [
     "/tai-khoan/cap-nhat",
     "/gio-hang"

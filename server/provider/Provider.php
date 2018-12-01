@@ -14,6 +14,7 @@
       );
 
       self::$db->set_charset('utf8mb4');
+
       //self::$db->real_escape_string();
 
       if (self::$db->connect_error){
@@ -30,7 +31,8 @@
     static function query(string $sql, string $types = "", $params = [], bool $modify = false){
       $q = self::$db->prepare($sql);
       //print_r($sql);
-      //echo "<hr>";
+      //echo "\n";
+      //print_r($params);
 
       if ($q){
         if ($types != ""){
@@ -47,6 +49,14 @@
       }
 
       return null;
+    }
+
+    static function insertAndGetLastID(string $sql, string $types, $params){
+      if (self::query($sql, $types, $params, true)){
+        //print_r(self::$db->insert_id);
+        return self::$db->insert_id;
+      }
+      return false;
     }
 
     static function select(string $sql, string $types = "", $params = []){
@@ -86,6 +96,23 @@
       }
       
       return null;
+    }
+
+    static function transaction($method) {
+      self::$db->autocommit(false);
+
+      $isOk = $method();
+
+      if ($isOk) {
+        self::$db->commit();
+      }
+      else {
+        self::$db->rollback();
+      }
+
+      self::$db->autocommit(true);
+
+      return $isOk;
     }
   }
 

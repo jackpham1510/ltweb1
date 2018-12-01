@@ -167,6 +167,12 @@ a{
 .el-menu--horizontal.el-menu--dark .el-submenu .el-menu-item.is-active, .el-menu-item.is-active{
 	color: #48576a !important;
 }
+.el-dialog__body{
+	padding-top: 0;
+}
+.el-dialog__wrapper{
+	display: block !important;
+}
 .card-body{
 	height: 400px;
 	
@@ -194,6 +200,10 @@ a{
 }
 
 @media(max-width: $sm-width){
+	.color-list{
+		max-height: 350px;
+		overflow: auto;
+	}
 	img.branch{
 		width: 160px !important;
 	}

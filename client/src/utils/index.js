@@ -62,9 +62,9 @@ export default new (function() {
 
   self.fetch = async (path, cb, options = {}) => {
     let res = await fetch(`${config.serverhost}/${path}`, options);
-    //console.log(await res.text());
-    let data = await res.json();
-    cb(data);
+    let data = await res.text();
+    //console.log(data);
+    cb(JSON.parse(data));
   }
 
   self.post = (path, body, cb) => {
@@ -80,6 +80,8 @@ export default new (function() {
   self.fetchProduct = async (path, cb) => {
     self.fetch(`product/${path}`, res => {
       //console.log(res);
+      if (!res) return null;
+
       if ('data' in res){
         res.data = res.data.map(item => {
           return ({...item, DETAIL: JSON.parse(item['DETAIL'])}) 
@@ -133,5 +135,9 @@ export default new (function() {
     }
 
     route(url);
+  }
+
+  self.totalPrice = (items) => {
+    return items.reduce((p, c) => (p + c['PRICE'] * c.quantity), 0);
   }
 })();

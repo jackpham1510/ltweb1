@@ -1,9 +1,11 @@
 import config from '../../../config.json';
 
 export default class authen {
+  static user = null;
+
   static isAuthenticated() {
     return new Promise(async resolve => {
-      let user = this.getUser();
+      let user = authen.user;
 
       if (user) {
         resolve(user);
@@ -25,7 +27,8 @@ export default class authen {
 
         if (user){
           delete user['PASSWORD'];
-          window.sessionStorage.setItem(config['local_user'], JSON.stringify(user));
+          //window.sessionStorage.setItem(config['local_user'], JSON.stringify(user));
+          authen.user = user;
           resolve(user);
         }
         else {
@@ -38,8 +41,7 @@ export default class authen {
   }
 
   static Logout() {
-    if (this.getUser()){
-      window.sessionStorage.removeItem(config['local_user']);
+    if (authen.user){
       window.localStorage.removeItem(config['token_name']);
       window.location.reload(true);
     }
@@ -50,11 +52,5 @@ export default class authen {
   }
   static saveToken(token) {
     window.localStorage.setItem(config['token_name'], token);
-  }
-
-  static getUser() {
-    let user = window.sessionStorage.getItem(config['local_user']);
-
-    return user !== null ? JSON.parse(user) : null;
   }
 }
