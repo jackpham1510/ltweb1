@@ -1303,4 +1303,24 @@ a:hover {
     padding: 0 15%;
   }
 }
+
+.pageTransition-enter {
+  opacity: 0;
+  -webkit-transition: opacity 1000ms ease-in;
+  transition: opacity 1000ms ease-in;
+}
+
+.pageTransition-enter.pageTransition-enter-active {
+  opacity: 1;
+}
+
+.pageTransition-leave {
+  opacity: 1;
+  -webkit-transition: opacity 1000ms ease-in;
+  transition: opacity 1000ms ease-in;
+}
+
+.pageTransition-leave.pageTransition-leave-active {
+  opacity: 0;
+}
 /*# sourceMappingURL=main.min.css.map */

@@ -76,7 +76,7 @@ export default class Product extends Component{
     if ('orderby' in params && 'mode' in params){
       apiPath += `&orderby=${params.orderby}&mode=${params.mode}`;
     }
-    console.log('api', apiPath);
+    //console.log('api', apiPath);
     utils.fetchProduct(apiPath, res => {
       window.scrollTo(0, 0);
       this.setState({ 
@@ -93,7 +93,7 @@ export default class Product extends Component{
     utils.routeParams(this.props.url, { page });
   }
   orderBy = (value) => {
-    console.log('value', value);
+    //console.log('value', value);
     let [ orderby, mode ] = value.split('-');
     utils.routeParams(this.props.url, { orderby, mode, page: 1 });
   }

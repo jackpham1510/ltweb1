@@ -1,11 +1,13 @@
 import { h, Component } from 'preact';
 import { Form, Input, Button, Notification } from 'element-react';
-import { Link, route } from 'preact-router';
+import { Link } from 'preact-router';
+import ReCaptcha from 'preact-google-recaptcha';
 import utils from '../utils';
 import authen from '../utils/authen';
 
 export default class Register extends Component {
   state = {
+    verify: 0,
     form: {
       username: '',
       password: '',
@@ -107,8 +109,26 @@ export default class Register extends Component {
     }
   }
 
+  grecaptcha = null
+
+  verifyGrecaptcha = gres => {
+    utils.fetch('grecaptcha/verify?gres='+gres, res => {
+      if (!res){
+        this.setState({ verify: -1 });
+        this.grecaptcha.reset();
+      }
+      else {
+        this.setState({ verify: 1 });
+      }
+    });
+  }
+
+  onExpiredCaptcha = () => {
+    this.setState({ verify: -1 });
+  }
+
   render(){
-    const { form, rules } = this.state;
+    const { form, rules, verify } = this.state;
     const isUpdate = this.props.type === 'cap-nhat';
 
     return (
@@ -134,6 +154,20 @@ export default class Register extends Component {
           <Form.Item label="Địa chỉ" prop="address">
             <Input type="textarea" autosize={{ minRows: 3}} value={this.state.form.address} onChange={this.onChange.bind(this, 'address')}></Input>
           </Form.Item>
+          <Form.Item className="d-flex fl-x-center pt-10">
+            <ReCaptcha ref={el => this.grecaptcha = el} 
+              sitekey="6LfkP34UAAAAANY2wOoxIQ6QagCbpmue6zTr05bv" 
+              onChange={this.verifyGrecaptcha}
+              onExpired={this.onExpiredCaptcha} />
+            {
+              verify === -1 &&
+              <p class="my-0" style="color: #ff4949" align="center">Lỗi xác thực, bạn vui lòng xác thực lại!</p>
+            }
+            {
+              verify === -2 &&
+              <p class="my-0" style="color: #ff4949" align="center">Bạn vui lòng xác thực trước khi đăng ký!</p>
+            }
+          </Form.Item>
           <Form.Item className="mt-30">
             <Button type="primary" className="width-100" onClick={this.handleSubmit}>{isUpdate ? 'Cập nhật' : 'Đăng ký'}</Button>
             {
@@ -152,8 +186,12 @@ export default class Register extends Component {
   }
   handleSubmit = (e) => {
     e.preventDefault();
+    let { verify } = this.state;
     this.formRef.validate((valid) => {
-      if (valid){
+      if (verify === 0){
+        this.setState({ verify: -2 });
+      }
+      if (valid && verify === 1){
         const isUpdate = this.props.type === 'cap-nhat';
         console.log(this.state.form);
         utils.post(isUpdate ? 'users/update' : 'users/add', this.state.form, res => {

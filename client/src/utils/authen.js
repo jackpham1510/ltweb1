@@ -23,7 +23,7 @@ export default class authen {
 
         //console.log(await res.text());
         user = await res.json();
-        console.log(user);
+        //console.log(user);
 
         if (user){
           delete user['PASSWORD'];

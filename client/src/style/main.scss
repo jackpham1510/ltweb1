@@ -292,4 +292,20 @@ a{
 		padding: 0 15%;
 	}
 }
+.pageTransition-enter {
+	opacity: 0;
+	transition: opacity 1000ms ease-in;
+}
 
+.pageTransition-enter.pageTransition-enter-active {
+	opacity: 1;
+}
+
+.pageTransition-leave {
+	opacity: 1;
+	transition: opacity 1000ms ease-in;
+}
+
+.pageTransition-leave.pageTransition-leave-active {
+	opacity: 0;
+}

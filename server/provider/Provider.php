@@ -1,5 +1,4 @@
 <?php 
-  require_once "core/Config.php";
   require_once "SqlBuilder.php";
 
   class Provider{

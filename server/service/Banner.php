@@ -1,6 +1,4 @@
 <?php 
-  require_once "provider/Provider.php";
-
   class BannerService{
 
     static function getAll(){

@@ -18,6 +18,7 @@ import Register from '../routes/Register';
 import authen from '../utils/authen';
 import Cart from '../routes/Cart';
 import BuyHistory from '../routes/BuyHistory';
+import Error from '../routes/Error';
 
 export default class App extends Component {
 	state = {
@@ -78,12 +79,15 @@ export default class App extends Component {
 	}
 
 	render() {
-		const { categories, branchs, user } = this.state;
+		const { categories, branchs, user, isAuthen } = this.state;
+
+		//console.log(branchs && categories && (!isAuthen || user) );
+
 		return (
 			<div id="app">
 				<Header {...this.state} />
 				{
-					branchs && categories && user &&
+					branchs && categories && (!isAuthen || user) &&
 					<div class="mt-20 mb-40">
 						<Router onChange={this.handleRoute}>
 							<Home path="/" {...this.state} />
@@ -94,6 +98,7 @@ export default class App extends Component {
 							<Register path="/tai-khoan/:type" user={user}></Register>
 							<Cart path="/gio-hang" {...this.state}></Cart>
 							<BuyHistory path="/lich-su-mua-hang/:page" {...this.state}></BuyHistory>
+							<Error default></Error>
 						</Router>
 					</div>
 				}

@@ -1,7 +1,4 @@
 <?php 
-  require_once "provider/Provider.php";
-  require_once "core/Util.php";
-
   class ProductService{
 
     static function getAll(int $page = 1){
@@ -55,8 +52,8 @@
       $s = "%$input%";
       //print_r($s);
       $sql = self::getBy(
-        'product p join category c on p.category_id=c.category_id 
-                   join branch b on b.branch_id=p.branch_id',
+        'product p left join category c on p.category_id=c.category_id 
+                   left join branch b on b.branch_id=p.branch_id',
         "p.name like ? or p.url like ? or b.url like ? or c.url like ? or b.name like ? or c.name like ?");
       
       return Provider::paginate($sql, $page, $ipp, 'ssssss', [$s, $s, $s, $s, $s, $s]);

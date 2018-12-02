@@ -2,9 +2,12 @@
   "env": "development",
   "dirname": "/ltweb1/server",
   "serverhost": "http://localhost:6969/ltweb1/server",
+  "admin_base": "http://localhost:6969/ltweb1/admin",
   "token_secret_key": "1660125_phamquantiendung",
   "token_name": "digishop_token",
-  "local_cart": "digishop_cart", 
+  "local_cart": "digishop_cart",
+  "grecaptcha-url": "https://www.google.com/recaptcha/api/siteverify",
+  "grecaptcha-secret": "6LfkP34UAAAAAARPpzIq6hHiK3tC7Qn8GWDagLn1",
   "order_status": {
     "0": "Đang chờ xác nhận",
     "1": "Đang giao hàng",

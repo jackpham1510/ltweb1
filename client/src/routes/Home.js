@@ -1,8 +1,6 @@
 import { h, Component } from 'preact';
 import { Layout } from 'element-react';
-import { Link } from 'preact-router';
 
-import config from '../../../config.json';
 import utils from '../utils';
 
 import CenterHead from '../components/CenterHead';

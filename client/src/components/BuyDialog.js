@@ -98,7 +98,7 @@ export class BuyDialog extends Component{
                   <div align="center">
                     <small>Mã đơn hàng: {orderID}</small><br/>
                     <small class="text-primary">
-                      <Link href="/lich-su-mua-hang">Xem lịch sử giao hàng tại đây</Link>
+                      <Link href="/lich-su-mua-hang/1">Xem lịch sử giao hàng tại đây</Link>
                     </small>
                   </div> :
                   (

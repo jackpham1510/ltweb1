@@ -1,7 +1,4 @@
 <?php
-  require_once "service/Orders.php";
-  require_once "core/Util.php";
-
   Router::post('/orders/insert', function ($req) {
 
     if (Util::isKeyExists('order', $req)){

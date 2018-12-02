@@ -1,7 +1,4 @@
 <?php 
-  require_once "provider/Provider.php";
-  require_once "core/Util.php";
-
   class OrderService {
     static function insert($order){
       $res = [ 
@@ -76,6 +73,13 @@
         ->build();
       
       return Provider::select($sql, "i", [$oder_id]);
+    }
+
+    static function getAll($page = 1){
+      $sql = SqlBuilder::from('orders')
+        ->select();
+      
+      return Provider::paginate($sql, $page, 20);
     }
   }
 ?>

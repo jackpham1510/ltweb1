@@ -1,7 +1,4 @@
 <?php
-  require_once "Config.php";
-  require_once "Util.php";
-
   class Router{
     private static $GET = [];
     private static $POST = [];

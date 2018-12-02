@@ -1,8 +1,4 @@
 <?php
-  require_once "service/Users.php";
-  require_once "core/Util.php";
-  require_once "core/JWT.php";
-
   Router::get('/users/check', function ($req){
     if (Util::isKeyExists('name', $req)){
       return UserService::CheckUsernameExist($req['name']);

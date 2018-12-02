@@ -80,19 +80,23 @@ export default new (function() {
   self.fetchProduct = async (path, cb) => {
     self.fetch(`product/${path}`, res => {
       //console.log(res);
-      if (!res) return null;
-
-      if ('data' in res){
-        res.data = res.data.map(item => {
-          return ({...item, DETAIL: JSON.parse(item['DETAIL'])}) 
-        });
+      if (res){
+        if ('data' in res){
+          if (res.data === null) {
+            cb(res);
+            return;
+          }
+  
+          res.data = res.data.map(item => {
+            return ({...item, DETAIL: JSON.parse(item['DETAIL'])}) 
+          });
+        }
+        else {
+          res = res.map(item => {
+            return ({...item, DETAIL: JSON.parse(item['DETAIL'])}) 
+          });  
+        }
       }
-      else {
-        res = res.map(item => {
-          return ({...item, DETAIL: JSON.parse(item['DETAIL'])}) 
-        });  
-      }
-      
       cb(res);
     });
   }

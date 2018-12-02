@@ -26,15 +26,18 @@ export default class SearchResult extends Component {
     return (
       <div class="container">
         <Layout.Row>
-          {
-            products &&
             <div>
-              <h2>Tìm được <span class="text-danger">{pagination.total}</span> sản phẩm với từ khóa "<span class="text-danger">{input}</span>"</h2>
+              {
+                pagination &&
+                <h2>Tìm được <span class="text-danger">{pagination.total}</span> sản phẩm với từ khóa "<span class="text-danger">{input}</span>"</h2>
+              }
               <hr class="mb-40 bd-0 bd-t-1" />
-              <ProductList products={products} categories={categories} branchs={branchs}>
-              </ProductList>
+              {
+                products &&
+                <ProductList products={products} categories={categories} branchs={branchs}>
+                </ProductList>
+              }
             </div>
-          }
           </Layout.Row>
           <Layout.Row className="mt-40 pt-20 d-flex fl-x-center">
           {

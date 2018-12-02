@@ -1,4 +1,6 @@
 <?php 
+  //print_r($_SERVER["REQUEST_URI"]);
+
   class Config{
     private static $config;
 

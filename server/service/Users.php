@@ -1,8 +1,4 @@
-<?php 
-  require_once "provider/Provider.php";
-  require_once "core/Util.php";
-  require_once "core/Config.php";
-
+<?php
   class UserService {
 
     public static function CheckUsernameExist(string $username){
@@ -85,6 +81,13 @@
         ->build();
       
       return Provider::select($sql, 's', [$username])[0];
+    }
+
+    public static function GetAll($page = 1){
+      $sql = SqlBuilder::from('users')
+        ->select();
+      
+      return Provider::paginate($sql, $page, 20);
     }
   }
 ?>

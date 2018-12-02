@@ -17,7 +17,7 @@ export default class Header extends Component{
 	}
 	componentWillReceiveProps(props) {
 		if (props.isAuthen !== this.props.isAuthen && props.isAuthen){
-			console.log('authen');
+			//console.log('authen');
 			cart.subscribe('cart_count', count => this.setState({ count }));
 			this.setState({
 				count: cart.countItems(props.user['USERNAME'])

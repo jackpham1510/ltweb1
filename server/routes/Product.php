@@ -1,8 +1,4 @@
 <?php
-  require_once "service/Product.php";
-  require_once "core/Util.php";
-  require_once "core/Config.php";
-
   $item_per_page = Config::getValue('product')['itemPerPage'];
 
   Router::get('/product/all', function ($req){
