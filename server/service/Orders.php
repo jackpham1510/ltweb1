@@ -61,6 +61,7 @@
     static function getList($username, $page){
       $sql = SqlBuilder::from('orders')
         ->where('username = ?')
+        ->order('order_date desc')
         ->select();
       
       return Provider::paginate($sql, $page, 10, 's', [$username]);
@@ -77,9 +78,38 @@
 
     static function getAll($page = 1){
       $sql = SqlBuilder::from('orders')
+        ->order('order_date desc')
         ->select();
       
       return Provider::paginate($sql, $page, 20);
+    }
+
+    static function updateStatus($id, $status){
+      return Provider::transaction(function () use($id, $status) {
+        $sql = SqlBuilder::from('orders')
+          ->where('order_id = ?')
+          ->update('status = ?')
+          ->build();
+
+        return Provider::query($sql, 'ii', [$status, $id], true);
+      });
+    }
+    /*
+      select DAY(ORDER_DATE), MONTH(ORDER_DATE), YEAR(ORDER_DATE), count(*) as TOTAL
+      from orders
+      group by DAY(ORDER_DATE), MONTH(ORDER_DATE), YEAR(ORDER_DATE)
+      order by DAY(ORDER_DATE) desc, MONTH(ORDER_DATE) desc, YEAR(ORDER_DATE) desc
+      limit 10 
+    */
+    static function getOrdersLast10Day(){
+      $sql = SqlBuilder::from('orders')
+        ->group('DAY(ORDER_DATE), MONTH(ORDER_DATE), YEAR(ORDER_DATE)')
+        ->order('DAY(ORDER_DATE) desc, MONTH(ORDER_DATE) desc, YEAR(ORDER_DATE) desc')
+        ->limit(10)
+        ->select('DAY(ORDER_DATE) as ORDER_DAY, MONTH(ORDER_DATE) as ORDER_MONTH, YEAR(ORDER_DATE) as ORDER_YEAR, count(*) as TOTAL')
+        ->build();
+      
+      return Provider::select($sql);
     }
   }
 ?>

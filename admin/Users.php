@@ -29,6 +29,14 @@
         <li role="presentation" class="active"><a style="cursor: pointer">List</a></li>
       </ul>
       <div>
+        <?php 
+          if (isset($_SESSION['rs_message'])) {
+        ?>
+          <div class="alert alert-<?php echo $_SESSION['rs_message']['success'] ? 'success' : 'danger' ?>">
+            <?php echo $_SESSION['rs_message']['message'] ?>
+          </div>
+          <?php unset($_SESSION['rs_message']) ?>
+        <?php } ?>
         <h4 style="margin-top: 20px"><small>Total: <?php echo $items['total'] ?> items</small></h4>
         <table width="100%" class="table table-bordered table-hover" id="dataTables-example">
           <thead>
@@ -39,7 +47,6 @@
               <th>ADDRESS</th>
               <th class="text-center">TYPE</th>
               <th class="text-center">UPDATE</th>
-              <th class="text-center">DELETE</th>
             </tr>
           </thead>
           <tbody>
@@ -51,14 +58,16 @@
                 <td><?php echo $item['NAME'] ?></td>
                 <td><?php echo $item['PHONE'] ?></td>
                 <td><?php echo $item['ADDRESS'] ?></td>
-                <td class="text-center">
-                  <select class="form-control">
-                    <option value="1" <?php echo $item['TYPE'] == 1 ? 'selected' : '' ?>>1</option>
-                    <option value="2" <?php echo $item['TYPE'] == 2 ? 'selected' : '' ?>>2</option>
-                  </select>
-                </td>
-                <td class="text-center"><button type="button" class="btn btn-primary"><i class="fa fa-edit"></i></button></td>
-                <td class="text-center"><button type="button" class="btn btn-danger"><i class="fa fa-trash"></i></button></td>
+                <form action="./UpdateUser.php" method="post">
+                  <input type="hidden" name="username" value="<?php echo $item['USERNAME'] ?>" />
+                  <td class="text-center">
+                    <select name="type" class="form-control">
+                      <option value="1" <?php echo $item['TYPE'] == 1 ? 'selected' : '' ?>>1</option>
+                      <option value="2" <?php echo $item['TYPE'] == 2 ? 'selected' : '' ?>>2</option>
+                    </select>
+                  </td>
+                  <td class="text-center"><button type="submit" class="btn btn-primary"><i class="fa fa-edit"></i></button></td>
+                </form>
               </tr>
             <?php } ?>
           </tbody>
@@ -89,4 +98,7 @@
   
 </div>
 
-<?php require_once "component/Script.php" ?>
+<?php 
+  require_once "component/Script.php";
+  require_once "component/Datables.php";
+?>

@@ -34,7 +34,7 @@
           </div>
           <?php unset($_SESSION['insert_brand_errors']) ?>
         <?php } ?>
-        <form action="./InsertBrandPost.php" method="post">
+        <form action="./InsertBrandPost.php" method="post" enctype="multipart/form-data">
           <div class="form-group">
             <label>NAME</label>
             <input type="text" name="name" class="form-control">
@@ -42,6 +42,11 @@
           <div class="form-group">
             <label>URL</label>
             <input type="text" name="url" class="form-control">
+          </div>
+          <div class="form-group">
+            <label>Logo</label>
+            <input type="file" name="logo" class="form-control" accept=".jpg">
+            <h4><small>Only accept .jpg</small></h4>
           </div>
           <button type="submit" class="btn btn-default">Submit</button>
         </form>

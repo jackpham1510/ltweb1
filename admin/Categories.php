@@ -28,13 +28,22 @@
     <div class="col-lg-12">
       <ul class="nav nav-tabs" style="margin-bottom: 30px">
         <li role="presentation" class="active"><a style="cursor: pointer">List</a></li>
-        <li role="presentation"><a href="./InsertBrand.php" style="cursor: pointer">Insert</a></li>
+        <li role="presentation"><a href="./InsertCategory.php" style="cursor: pointer">Insert</a></li>
       </ul>
       <div>
+        <?php 
+          if (isset($_SESSION['rs_message'])) {
+        ?>
+          <div class="alert alert-<?php echo $_SESSION['rs_message']['success'] ? 'success' : 'danger' ?>">
+            <?php echo $_SESSION['rs_message']['message'] ?>
+          </div>
+          <?php unset($_SESSION['rs_message']) ?>
+        <?php } ?>
         <h4 style="margin-top: 20px"><small>Total: <?php echo $items['total'] ?> items</small></h4>
         <table width="100%" class="table table-bordered table-hover" id="dataTables-example">
           <thead>
             <tr>
+              <th>ICON</th>
               <th>ID</th>
               <th>NAME</th>
               <th>URL</th>
@@ -47,13 +56,18 @@
               foreach($items['data'] as $k => $item){
             ?>
               <tr class="gradeX">
+                <td><img src="<?php echo Config::getValue('client_images')."/icon/".$item["URL"].".png" ?>" width="32"/></td>
                 <td><?php echo $item['CATEGORY_ID'] ?></td>
                 <td><?php echo $item['NAME'] ?></td>
                 <td><?php echo $item['URL'] ?></td>
                 <td class="text-center">
-                  <a href="./UpdateBrand.php?id=<?php echo $item['CATEGORY_ID'] ?>"><button type="button" class="btn btn-primary"><i class="fa fa-edit"></i></button></a>
+                  <a href="./UpdateCategory.php?id=<?php echo $item['CATEGORY_ID'] ?>"><button type="button" class="btn btn-primary"><i class="fa fa-edit"></i></button></a>
                 </td>
-                <td class="text-center"><button type="button" class="btn btn-danger"><i class="fa fa-trash"></i></button></td>
+                <td class="text-center">
+                  <button type="button" class="btn btn-danger" onclick="deleteItem('<?php echo $item['URL'] ?>')">
+                    <i class="fa fa-trash"></i>
+                  </button>
+                </td>
               </tr>
             <?php } ?>
           </tbody>
@@ -84,4 +98,15 @@
   </div>
 </div>
 
-<?php require_once "component/Script.php" ?>
+<?php 
+  require_once "component/Script.php";
+  require_once "component/Datables.php";
+?>
+<script>
+  function deleteItem(url){
+    let rs = window.confirm('Are you sure to delete category, url: ' + url);
+    if (rs){
+      window.open(window.location.origin+'/ltweb1/admin/DeleteCategory.php?url='+url, '_self');
+    }
+  }
+</script>

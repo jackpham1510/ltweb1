@@ -44,7 +44,9 @@
           </div>
           <?php unset($_SESSION['update_category_errors']) ?>
         <?php } ?>
-        <form action="./UpdateCategoryPost.php" method="post">
+        <form action="./UpdateCategoryPost.php" method="post" enctype="multipart/form-data">
+          <input type="hidden" name="id" value="<?php echo $category['CATEGORY_ID'] ?>" />
+          <input type="hidden" name="oldUrl" value="<?php echo $category['URL'] ?>" />
           <div class="form-group">
             <label>NAME</label>
             <input type="text" name="name" class="form-control" value="<?php echo $category['NAME'] ?>">
@@ -53,6 +55,11 @@
             <label>URL</label>
             <input type="text" name="url" class="form-control" value="<?php echo $category['NAME'] ?>">
           </div>
+          <div class="form-group">
+            <label>Icon</label>
+            <input type="file" name="icon" class="form-control" accept=".png">
+          </div>
+          <h4><small>Only accept .png</small></h4>
           <button type="submit" class="btn btn-default">Submit</button>
         </form>
       </div>

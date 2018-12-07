@@ -21,6 +21,17 @@
       return false;
     }
 
+    public static function UpdateType($username, $type){
+      return Provider::transaction(function () use ($username, $type) {
+        $sql = SqlBuilder::from('users')
+          ->where('username = ?')
+          ->update('type = ?')
+          ->build();
+
+        return Provider::query($sql, 'is', [$type, $username], true);
+      });
+    }
+
     public static function Update($user){
       $updateStr = 'name=?,phone=?,address=?';
       $paramStr = 'ssss';

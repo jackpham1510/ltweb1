@@ -39,9 +39,9 @@
       return $this;
     }
 
-    public function delete(string $qdelete){
-      $this->qdelete = $qdelete;
+    public function delete(){
       $this->qtype = "delete";
+      return $this;
     }
 
     public function where(string $qwhere){
@@ -82,7 +82,7 @@
         case "select":
           $sql = "select $this->qselect from $this->qfrom";
           $sql .= isset($this->qwhere) ? " where $this->qwhere" : "";
-          $sql .= isset($this->qgroup) ? " group by $this->qfrom" : "";
+          $sql .= isset($this->qgroup) ? " group by $this->qgroup" : "";
           $sql .= isset($this->qhaving) ? " having $this->qhaving" : "";
           $sql .= isset($this->qorder) ? " order by $this->qorder" : "";
           $sql .= isset($this->qlimit) ? " limit $this->qlimit" : "";
@@ -91,7 +91,7 @@
           $sql = "update $this->qfrom set $this->qupdate where $this->qwhere";
           break;
         case "delete":
-          $sql = "delete $this->qfrom where $this->qwhere";
+          $sql = "delete from $this->qfrom where $this->qwhere";
           break;
         case "insert":
           $sql = "insert into $this->qfrom values($this->qinsert)";

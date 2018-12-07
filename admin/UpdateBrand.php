@@ -42,7 +42,9 @@
           </div>
           <?php unset($_SESSION['update_brand_errors']) ?>
         <?php } ?>
-        <form action="./UpdateBrandPost.php" method="post">
+        <form action="./UpdateBrandPost.php" method="post" enctype="multipart/form-data">
+          <input type="hidden" name="id" value="<?php echo $brand['BRANCH_ID'] ?>" />
+          <input type="hidden" name="oldUrl" value="<?php echo $brand['URL'] ?>" />
           <div class="form-group">
             <label>NAME</label>
             <input type="text" name="name" class="form-control" value="<?php echo $brand['NAME'] ?>">
@@ -50,6 +52,11 @@
           <div class="form-group">
             <label>URL</label>
             <input type="text" name="url" class="form-control" value="<?php echo $brand['URL'] ?>">
+          </div>
+          <div class="form-group">
+            <label>Logo</label>
+            <input type="file" name="logo" class="form-control">
+            <h4><small>Only accept .jpg</small></h4>
           </div>
           <button type="submit" class="btn btn-default">Submit</button>
         </form>

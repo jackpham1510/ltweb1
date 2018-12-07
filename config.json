@@ -3,6 +3,7 @@
   "dirname": "/ltweb1/server",
   "serverhost": "http://localhost:6969/ltweb1/server",
   "admin_base": "http://localhost:6969/ltweb1/admin",
+  "client_images": "../client/build/assets/images",
   "token_secret_key": "1660125_phamquantiendung",
   "token_name": "digishop_token",
   "local_cart": "digishop_cart",

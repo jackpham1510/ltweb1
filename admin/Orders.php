@@ -30,6 +30,14 @@
         <li role="presentation" class="active"><a style="cursor: pointer">List</a></li>
       </ul>
       <div>
+        <?php 
+          if (isset($_SESSION['rs_message'])) {
+        ?>
+          <div class="alert alert-<?php echo $_SESSION['rs_message']['success'] ? 'success' : 'danger' ?>">
+            <?php echo $_SESSION['rs_message']['message'] ?>
+          </div>
+          <?php unset($_SESSION['rs_message']) ?>
+        <?php } ?>
         <h4 style="margin-top: 20px"><small>Total: <?php echo $items['total'] ?> items</small></h4>
         <table width="100%" class="table table-bordered table-hover" id="dataTables-example">
           <thead>
@@ -41,28 +49,33 @@
               <th>PRICE</th>
               <th class="text-center">STATUS</th>
               <th class="text-center">UPDATE</th>
-              <th class="text-center">DELETE</th>
+              <th class="text-center">DETAIL</th>
             </tr>
           </thead>
           <tbody>
             <?php 
               foreach($items['data'] as $k => $item){
             ?>
-              <tr class="gradeX <?php echo $item['STATUS'] === 2 ? 'bg-success' : '' ?>">
+              <tr class="gradeX <?php echo $item['STATUS'] === 2 ? 'bg-success' : ($item['STATUS'] < 0 ? 'bg-danger' : '') ?>">
                 <td><?php echo $item['ORDER_ID'] ?></td>
                 <td><?php echo $item['USERNAME'] ?></td>
                 <td><?php echo $item['ORDER_DATE'] ?></td>
                 <td><?php echo $item['RECEIVE_DATE'] ?></td>
-                <td><?php echo $item['PRICE'] ?></td>
+                <td><?php echo number_format($item['PRICE']) ?></td>
+                <form action="./UpdateOrder.php" method="post">
+                  <td class="text-center">
+                    <input type="hidden" name="id" value="<?php echo $item['ORDER_ID'] ?>" />
+                    <select name="status" class="form-control">
+                      <?php foreach($status as $k => $v) { ?>
+                        <option value="<?php echo $k ?>" <?php echo $item['STATUS'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                      <?php } ?>
+                    </select>
+                  </td>
+                  <td class="text-center"><button type="submit" class="btn btn-primary"><i class="fa fa-edit"></i></button></td>
+                </form>
                 <td class="text-center">
-                  <select class="form-control">
-                    <?php foreach($status as $k => $v) { ?>
-                      <option value="<?php echo $k ?>" <?php echo $item['STATUS'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
-                    <?php } ?>
-                  </select>
+                  <a href="./OrderDetail.php?order_id=<?php echo $item['ORDER_ID'] ?>"><button type="button" class="btn btn-success"><i class="fa fa-eye"></i></button></a>
                 </td>
-                <td class="text-center"><button type="button" class="btn btn-primary"><i class="fa fa-edit"></i></button></td>
-                <td class="text-center"><button type="button" class="btn btn-danger"><i class="fa fa-trash"></i></button></td>
               </tr>
             <?php } ?>
           </tbody>
@@ -93,4 +106,7 @@
   
 </div>
 
-<?php require_once "component/Script.php" ?>
+<?php 
+  require_once "component/Script.php";
+  require_once "component/Datables.php";
+?>

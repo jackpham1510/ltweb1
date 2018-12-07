@@ -2,9 +2,10 @@
   class ProductService{
 
     static function getAll(int $page = 1){
-      $sql = SqlBuilder::from('product')
-        ->select();
-
+      $sql = SqlBuilder::from('product p left join branch b on p.branch_id=b.branch_id 
+                                         left join category c on c.category_id=p.category_id')
+        ->select('p.*, b.NAME as BRANCH_NAME, c.NAME as CATEGORY_NAME, b.URL as BRANCH_URL, c.URL as CATEGORY_URL');
+      
       return Provider::paginate($sql, $page, 20);
     }
 
@@ -27,15 +28,6 @@
         ->build();
       
       return Provider::select($sql);
-    }
-
-    static function getByUrl(string $url){
-      $sql = SqlBuilder::from('product')
-        ->where("url=?")
-        ->select()
-        ->build();
-      
-      return Provider::select($sql, 's', [$url])[0];
     }
 
     static function getInIdList($idList){
@@ -133,6 +125,18 @@
         "c.url = ? and b.url = ?");
     }
 
+    static function getByName(string $name) {
+      $sql = self::getBy("product p", "p.name = ?")->build();
+      $rs = Provider::select($sql, 's', [$name]);
+      return isset($rs) ? $rs[0] : null;
+    }
+
+    static function getByUrl(string $url){
+      $sql = self::getBy("product p", "p.url = ?")->build();
+      $rs = Provider::select($sql, 's', [$url]);
+      return isset($rs) ? $rs[0] : null;
+    }
+
     static function incView(string $url){
       $sql = SqlBuilder::from('product')
         ->where("url=?")
@@ -140,6 +144,46 @@
         ->build();
       
       Provider::query($sql, 's', [$url]);
+    }
+
+    static function insert($product){
+      return Provider::transaction(function () use($product) {
+        $sql = SqlBuilder::from("product(branch_id, category_id, name, subtitle, url, price, view, sold, detail, quantity)")
+          ->insert("?, ?, ?, ?, ?, ?, ?, ?, ?, ?")
+          ->build();
+        
+        return Provider::query($sql, "iisssiiisi", [
+          $product["branch_id"], $product["category_id"], $product["name"],
+          $product["subtitle"], $product["url"], $product["price"], 
+          0, 0, $product["detail"], $product["quantity"]
+        ], true);
+      });
+    }
+
+    static function update($product){
+      return Provider::transaction(function () use($product){
+        $sql = SqlBuilder::from("product")
+          ->update("branch_id = ?, category_id = ?, name = ?, subtitle = ?, url = ?, price = ?, view = ?, sold = ?, detail = ?, quantity = ?")
+          ->where("product_id = ?")
+          ->build();
+        
+        return Provider::query($sql, "iisssiiisii", [
+          $product["branch_id"], $product["category_id"], $product["name"],
+          $product["subtitle"], $product["url"], $product["price"], 
+          0, 0, $product["detail"], $product["quantity"], $product["id"]
+        ], true);
+      });
+    }
+
+    static function delete($url){
+      return Provider::transaction(function () use($url) {
+        $sql = SqlBuilder::from("product")
+          ->where("url = ?")
+          ->delete()
+          ->build();
+
+        return Provider::query($sql, "s", [$url], true);
+      });
     }
   }
 ?>

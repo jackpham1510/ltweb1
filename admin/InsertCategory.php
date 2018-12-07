@@ -34,7 +34,7 @@
           </div>
           <?php unset($_SESSION['insert_category_errors']) ?>
         <?php } ?>
-        <form action="./InsertCategoryPost.php" method="post">
+        <form action="./InsertCategoryPost.php" method="post" enctype="multipart/form-data">
           <div class="form-group">
             <label>NAME</label>
             <input type="text" name="name" class="form-control">
@@ -43,6 +43,11 @@
             <label>URL</label>
             <input type="text" name="url" class="form-control">
           </div>
+          <div class="form-group">
+            <label>Icon</label>
+            <input type="file" name="icon" class="form-control" accept=".png">
+          </div>
+          <h4><small>Only accept .png</small></h4>
           <button type="submit" class="btn btn-default">Submit</button>
         </form>
       </div>

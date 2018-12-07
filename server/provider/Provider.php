@@ -29,9 +29,11 @@
 
     static function query(string $sql, string $types = "", $params = [], bool $modify = false){
       $q = self::$db->prepare($sql);
-      //print_r($sql);
-      //echo "\n";
-      //print_r($params);
+      // var_dump($sql);
+      // echo "<br>";
+      // print_r($params);
+      // echo "<br>";
+      // var_dump($q);
 
       if ($q){
         if ($types != ""){
@@ -40,6 +42,9 @@
         
         $rs = $q->execute();
         
+        // echo "<br>Result: ";
+        // var_dump($rs);
+
         if ($modify){
           return $rs;
         }
@@ -110,6 +115,9 @@
       }
 
       self::$db->autocommit(true);
+
+      //echo "isOk: ";
+      //var_dump($isOk);
 
       return $isOk;
     }
