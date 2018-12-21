@@ -17,7 +17,7 @@
 
       $file = $_FILES['icon'];
       $isOk = empty($errors) && FilterFileType($file, ['png']) 
-        && SaveFile($file, Config::getValue('client_images').'/icon', $url, '.png')
+        && SaveFile($file, Config::getValue('client_images').'/icon', $url.'-32', '.png')
         && CategoryService::insert($name, $url);
 
       if (!$isOk) {

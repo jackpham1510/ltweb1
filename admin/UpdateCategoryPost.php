@@ -23,7 +23,7 @@
       $hasIcon = $isOk && is_file_ok($_FILES['icon']);
       $file = $hasIcon ? $_FILES['icon'] : null;
       $removeOldiconSuccess = !$hasIcon || unlink(Config::getValue('client_images')."/icon/$oldUrl.png");
-      $saveImgSuccess = !$hasIcon || (FilterFileType($file, ['png']) && SaveFile($file, Config::getValue('client_images').'/icon', $url, '.png'));
+      $saveImgSuccess = !$hasIcon || (FilterFileType($file, ['png']) && SaveFile($file, Config::getValue('client_images').'/icon', $url.'-32', '.png'));
       $isOk = $saveImgSuccess && CategoryService::update($_POST['id'], $name, $_POST['url']);
 
       if (!$isOk) {

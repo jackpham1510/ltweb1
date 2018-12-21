@@ -56,7 +56,7 @@
               foreach($items['data'] as $k => $item){
             ?>
               <tr class="gradeX">
-                <td><img src="<?php echo Config::getValue('client_images')."/icon/".$item["URL"].".png" ?>" width="32"/></td>
+                <td style="background: #333"><img src="<?php echo Config::getValue('client_images')."/icon/".$item["URL"]."-32.png" ?>" width="32"/></td>
                 <td><?php echo $item['CATEGORY_ID'] ?></td>
                 <td><?php echo $item['NAME'] ?></td>
                 <td><?php echo $item['URL'] ?></td>
